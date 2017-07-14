@@ -1,0 +1,8 @@
+branches:
+  only:
+    - master
+
+sudo: false
+
+script:
+  - make all
