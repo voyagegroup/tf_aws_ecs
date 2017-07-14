@@ -108,12 +108,11 @@ variable "autoscale_thresholds" {
   description = "The values against which the specified statistic is compared"
   type        = "map"
   default     = {
-    /*
-     * For example
-     *
-    cpu_reservation_high    = 75
-    cpu_reservation_low     =  5
-     */
+    # Supporting thresholds as berow
+    #cpu_reservation_high    = // e.g. 75
+    #cpu_reservation_low     = // e.g.  5
+    #memory_reservation_high = // e.g. 75
+    #memory_reservation_low  = // e.g. 40
   }
 }
 
