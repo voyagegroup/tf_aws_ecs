@@ -10,7 +10,7 @@ A terraform module to provides ecs cluster
 ```hcl
 module "ecs_cluster" {
   source                       = "github.com/voyagegroup/tf_aws_ecs/cluster"
-  name                         = "vg-app"
+  name                         = "ex-app-cluster"
 
   #
   # CloudWatch Logs
@@ -20,13 +20,13 @@ module "ecs_cluster" {
   #
   # Container Instance
   #
-  key_name                     = "${aws_key_pair.vg_app.key_name}"
+  key_name                     = "${aws_key_pair.ex_app.key_name}"
   ami_id                       = "ami-04351e12"
   vpc_zone_identifier          = [
     "${aws_subnet.az_left.id}",
     "${aws_subnet.az_right.id}",
   ]
-  security_groups              = ["${aws_security_group.vg_app.id}"]
+  security_groups              = ["${aws_security_group.ex_app.id}"]
   instance_type                = "c4.large"
   user_data                    = "${ file('user_data.sh') }"
 
@@ -42,7 +42,7 @@ module "ecs_cluster" {
   asg_extra_tags               = [
     {
       key                 = "Name"
-      name                = "vg-app"
+      name                = "example-application"
       propagate_at_launch = true
     }
   ]
