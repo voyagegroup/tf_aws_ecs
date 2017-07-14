@@ -102,6 +102,58 @@ variable "asg_extra_tags" {
   */]
 }
 
+# AutoScaling
+
+variable "autoscale_thresholds" {
+  description = "The values against which the specified statistic is compared"
+  type        = "map"
+  default     = {
+    /*
+     * For example
+     *
+    cpu_reservation_high    = 75
+    cpu_reservation_low     =  5
+     */
+  }
+}
+
+variable "autoscale_cooldown" {
+  description = "The cooldown / period for watching scale (seconds)"
+  default     = 300
+}
+
+variable "scale_out_adjustment" {
+  default = 1
+}
+
+variable "scale_in_adjustment" {
+  default = -1
+}
+
+variable "scale_out_ok_actions" {
+  description = "For scale-out as same as ok actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_out_more_alarm_actions" {
+  description = "For scale-out as same as alarm actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_in_ok_actions" {
+  description = "For scale-in as same as ok actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_in_more_alarm_actions" {
+  description = "For scale-in as same as alarm actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
 # Cloudwatch Log Group
 
 variable "log_groups_expiration_days" {
