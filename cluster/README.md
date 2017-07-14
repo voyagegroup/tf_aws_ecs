@@ -15,8 +15,8 @@ module "ecs_cluster" {
   key_name                   = "${aws_key_pair.vg_app.key_name}"
   ami_id                     = "ami-04351e12"
   vpc_zone_identifier        = [
-    ${aws_subnet.az_left.id},
-    ${aws_subnet.az_right.id},
+    "${aws_subnet.az_left.id}",
+    "${aws_subnet.az_right.id}",
   ]
   security_groups            = ["${aws_security_group.vg_app.id}"]
   instance_type              = "c4.large"
