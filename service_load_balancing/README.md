@@ -17,18 +17,6 @@ module "ecs_service" {
   source                       = "github.com/voyagegroup/tf_aws_ecs/service_load_balancing"
   name                         = "ex-app-api-service"
   cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
-
-  #
-  # For example: Ignored for dynamic changes via deployment
-  #
-  #desired_count =
-  life_cycle_ignore_changes    = [
-    "task_definition",
-    "desired_count",
-    "deployment_maximum_percent",
-    "deployment_minimum_healthy_percent",
-  ]
-
   target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
 
   container_name               = "ex-app-api"           // same as "name"          into container_defition

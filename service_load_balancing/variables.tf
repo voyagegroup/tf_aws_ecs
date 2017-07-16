@@ -78,13 +78,16 @@ variable "deployment_minimum_healthy_percent" {
   default     = 100
 }
 
-variable "life_cycle_ignore_changes" {
-  description = "The list of ignored through changes for resource of ECS Service"
-  type        = "list"
-  default     = [
-    "desired_count",
-  ]
-}
+# INFO: In the future, we support that U can customize to ignore_changes in life_cycle block.
+#       https://github.com/hashicorp/terraform/issues/3116
+#
+#variable "life_cycle_ignore_changes" {
+#  description = "The list of ignored through changes for resource of ECS Service"
+#  type        = "list"
+#  default     = [
+#    "desired_count",
+#  ]
+#}
 
 # Application Load Balancer
 

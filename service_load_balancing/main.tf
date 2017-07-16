@@ -30,7 +30,11 @@ resource "aws_ecs_service" "main" {
   }
 
   lifecycle {
-    ignore_changes = ["${var.life_cycle_ignore_changes}"]
+    # INFO: In the future, we support that U can customize
+    #       https://github.com/hashicorp/terraform/issues/3116
+    ignore_changes = [
+      "desired_count",
+    ]
   }
 
   depends_on = ["aws_iam_role_policy.ecs_service"]
