@@ -20,7 +20,7 @@ $(TERRAFORM):
 	curl -L -fsS --retry 2 -o $@.zip $(TERRAFORM_URL)
 	unzip $@.zip && rm -f $@.zip
 
-validate: $(TF_DIRS)
+validate: $(TERRAFORM)
 	@for tf_dir in $$(find . -type f -name "*.tf" | xargs -I {} dirname {} | uniq | sort); do \
 	  printf "%-60s ... " "$$tf_dir"; \
 	  $(TERRAFORM) $(@F) $$tf_dir && echo "OK" || IF_ERROR=1; \
