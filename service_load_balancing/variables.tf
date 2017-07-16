@@ -119,3 +119,62 @@ variable "container_log_groups_expiration_days" {
   description = "Specifies the number of days you want to retain log events"
   default     = 30
 }
+
+# AutoScaling
+
+variable "autoscale_thresholds" {
+  description = "The values against which the specified statistic is compared"
+  type        = "map"
+  default     = {
+    # Supporting thresholds as berow
+    #cpu_high    = // e.g. 75
+    #cpu_row     = // e.g.  5
+    #memory_high = // e.g. 75
+    #memory_row  = // e.g. 40
+  }
+}
+
+variable "autoscale_max_capacity" {
+  description = "The max capacity of the scalable target"
+}
+
+variable "autoscale_min_capacity" {
+  description = "The min capacity of the scalable target"
+}
+
+variable "autoscale_cooldown" {
+  description = "The cooldown / period for watching scale (seconds)"
+  default     = 300
+}
+
+variable "scale_out_adjustment" {
+  default = 1
+}
+
+variable "scale_in_adjustment" {
+  default = -1
+}
+
+variable "scale_out_ok_actions" {
+  description = "For scale-out as same as ok actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_out_more_alarm_actions" {
+  description = "For scale-out as same as alarm actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_in_ok_actions" {
+  description = "For scale-in as same as ok actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}
+
+variable "scale_in_more_alarm_actions" {
+  description = "For scale-in as same as alarm actions for cloudwatch alarms"
+  type        = "list"
+  default     = []
+}

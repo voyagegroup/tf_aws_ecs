@@ -46,5 +46,16 @@ module "ecs_service" {
   }
 ]
 TASK_DEFITION
+
+  #
+  # [Option] AutoScaling
+  #
+  autoscale_min_capacity       = 2
+  autoscale_max_capacity       = 8
+  autoscale_thresholds         = {
+    memory_high = 75
+    memory_low  = 40
+  }
+  scale_out_more_alarm_actions = ["${aws_sns_topic.ex_alert.arn}"]
 }
 ```
