@@ -38,10 +38,17 @@ resource "aws_launch_configuration" "app" {
   key_name                    = "${var.key_name}"
   image_id                    = "${var.ami_id}"
   instance_type               = "${var.instance_type}"
+  ebs_optimized               = "${var.ebs_optimized}"
   iam_instance_profile        = "${aws_iam_instance_profile.ecs_instance.name}"
   user_data                   = "${var.user_data}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
   enable_monitoring           = true
+
+  # NOTE: Currently no-support to customizing block device(s)
+  #       - OS specified image_id is not always using /dev/xvdcz as docker storage
+  #       - As a workaround, creates the ami that it is customizing to the block device mappings
+  #root_block_device {}
+  #ebs_block_device  { device_name = "/dev/xvdcz" }
 
   lifecycle {
     create_before_destroy = true

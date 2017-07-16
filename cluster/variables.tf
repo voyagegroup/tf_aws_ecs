@@ -38,6 +38,11 @@ variable "instance_type" {
   default     = "t2.small"
 }
 
+variable "ebs_optimized" {
+  description = "If true, the launched EC2 instance will be EBS-optimized"
+  default     = true
+}
+
 variable "security_groups" {
   description = "AWS security group id(s) for container instances launch configuration"
   type        = "list"
