@@ -147,12 +147,24 @@ variable "autoscale_cooldown" {
   default     = 300
 }
 
-variable "scale_out_adjustment" {
-  default = 1
+variable "scale_out_step_adjustment" {
+  description = "The attributes of step scaling policy"
+  type        = "map"
+  default     = {
+    metric_interval_lower_bound = "" // empty as infinity
+    metric_interval_upper_bound = "" // empty as infinity
+    scaling_adjustment          = 1
+  }
 }
 
-variable "scale_in_adjustment" {
-  default = -1
+variable "scale_in_step_adjustment" {
+  description = "The attributes of step scaling policy"
+  type        = "map"
+  default     = {
+    metric_interval_lower_bound = "" // empty as infinity
+    metric_interval_upper_bound = "" // empty as infinity
+    scaling_adjustment          = -1
+  }
 }
 
 variable "scale_out_ok_actions" {

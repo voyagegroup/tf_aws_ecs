@@ -42,8 +42,9 @@ resource "aws_appautoscaling_policy" "scale_out" {
   service_namespace       = "ecs"
 
   step_adjustment {
-    metric_interval_lower_bound = 0
-    scaling_adjustment          = "${var.scale_out_adjustment}"
+    metric_interval_lower_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_lower_bound", "")}"
+    metric_interval_upper_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_upper_bound", "")}"
+    scaling_adjustment          = "${lookup(var.scale_out_step_adjustment, "scaling_adjustment")}"
   }
 
   depends_on = ["aws_appautoscaling_target.main"]
@@ -61,8 +62,9 @@ resource "aws_appautoscaling_policy" "scale_in" {
   service_namespace       = "ecs"
 
   step_adjustment {
-    metric_interval_upper_bound = 0
-    scaling_adjustment          = "${var.scale_in_adjustment}"
+    metric_interval_lower_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_lower_bound", "")}"
+    metric_interval_upper_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_upper_bound", "")}"
+    scaling_adjustment          = "${lookup(var.scale_in_step_adjustment, "scaling_adjustment")}"
   }
 
   depends_on = ["aws_appautoscaling_target.main"]

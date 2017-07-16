@@ -57,5 +57,13 @@ TASK_DEFITION
     memory_low  = 40
   }
   scale_out_more_alarm_actions = ["${aws_sns_topic.ex_alert.arn}"]
+  scale_out_step_adjustment    = {
+    metric_interval_lower_bound = 0
+    scaling_adjustment          = 1
+  }
+  scale_in_step_adjustment     = {
+    metric_interval_upper_bound = 0
+    scaling_adjustment          = -1
+  }
 }
 ```
