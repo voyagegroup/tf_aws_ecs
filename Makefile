@@ -21,7 +21,8 @@ $(TERRAFORM):
 	unzip $@.zip && rm -f $@.zip
 
 validate: $(TERRAFORM)
+	@echo "[Validate on terraform modules]"
 	@for tf_dir in $$(find . -type f -name "*.tf" | xargs -I {} dirname {} | uniq | sort); do \
-	  printf "%-60s ... " "$$tf_dir"; \
+	  printf "%-30s ... " "$$tf_dir"; \
 	  $(TERRAFORM) $(@F) $$tf_dir && echo "OK" || IF_ERROR=1; \
 	done; exit $$IF_ERROR
