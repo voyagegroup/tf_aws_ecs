@@ -155,6 +155,11 @@ variable "scale_in_more_alarm_actions" {
 
 # Cloudwatch Log Group
 
+variable "log_group" {
+  description = "The name of cloudwatch log group"
+  type        = "string"
+}
+
 variable "log_groups_expiration_days" {
   description = "Specifies the number of days you want to retain log events"
   default     = 30

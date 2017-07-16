@@ -15,6 +15,7 @@ module "ecs_cluster" {
   #
   # CloudWatch Logs
   #
+  log_group                    = "ex-app-cluster/ecs-agent"
   log_groups_expiration_days   = 14
 
   #
