@@ -3,6 +3,8 @@
 A terraform module to provides -
 
 - [ECS Cluster](cluster)
+- ECS Service
+  - [ServiceLoadBalancing](service_load_balancing)
 
 On Amazon Web Services.
 
