@@ -121,17 +121,24 @@ variable "autoscale_thresholds" {
   }
 }
 
+variable "autoscale_period" {
+  description = "The period in seconds over which the specified applied for autoscaling"
+  default     = 300
+}
+
 variable "autoscale_cooldown" {
-  description = "The cooldown / period for watching scale (seconds)"
+  description = "The amount of time (seconds) after a scaling activity completes and before the next scaling activity can start"
   default     = 300
 }
 
 variable "scale_out_adjustment" {
-  default = 1
+  description = "The number of instances by which to scale out"
+  default     = 1
 }
 
 variable "scale_in_adjustment" {
-  default = -1
+  description = "The number of instances by which to scale out"
+  default     = -1
 }
 
 variable "scale_out_ok_actions" {

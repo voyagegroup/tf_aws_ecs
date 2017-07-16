@@ -5,23 +5,23 @@
  */
 
 resource "aws_autoscaling_policy" "scale_out" {
-  count                  = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count                     = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
-  name                   = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut"
-  autoscaling_group_name = "${aws_autoscaling_group.app.name}"
-  scaling_adjustment     = "${var.scale_out_adjustment}"
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = "${var.autoscale_cooldown}"
+  name                      = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut"
+  autoscaling_group_name    = "${aws_autoscaling_group.app.name}"
+  scaling_adjustment        = "${var.scale_out_adjustment}"
+  adjustment_type           = "ChangeInCapacity"
+  cooldown                  = "${var.autoscale_cooldown}"
 }
 
 resource "aws_autoscaling_policy" "scale_in" {
-  count                  = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count                     = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
-  name                   = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut"
-  autoscaling_group_name = "${aws_autoscaling_group.app.name}"
-  scaling_adjustment     = "${var.scale_in_adjustment}"
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = "${var.autoscale_cooldown}"
+  name                      = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleIn"
+  autoscaling_group_name    = "${aws_autoscaling_group.app.name}"
+  scaling_adjustment        = "${var.scale_in_adjustment}"
+  adjustment_type           = "ChangeInCapacity"
+  cooldown                  = "${var.autoscale_cooldown}"
 }
 
 // Memory Reservation
@@ -35,7 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "cluster_memory_high" {
   evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "${var.autoscale_cooldown}"
+  period              = "${var.autoscale_period}"
   statistic           = "Average"
   threshold           = "${var.autoscale_thresholds["memory_reservation_high"]}"
   treat_missing_data  = "notBreaching"
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "cluster_memory_low" {
   evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "${var.autoscale_cooldown}"
+  period              = "${var.autoscale_period}"
   statistic           = "Average"
   threshold           = "${var.autoscale_thresholds["memory_reservation_low"]}"
   treat_missing_data  = "notBreaching"
@@ -87,7 +87,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
   evaluation_periods  = "1"
   metric_name         = "CPUReservation"
   namespace           = "AWS/ECS"
-  period              = "${var.autoscale_cooldown}"
+  period              = "${var.autoscale_period}"
   statistic           = "Average"
   threshold           = "${var.autoscale_thresholds["cpu_reservation_high"]}"
   treat_missing_data  = "notBreaching"
@@ -112,7 +112,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
   evaluation_periods  = "1"
   metric_name         = "CPUReservation"
   namespace           = "AWS/ECS"
-  period              = "${var.autoscale_cooldown}"
+  period              = "${var.autoscale_period}"
   statistic           = "Average"
   threshold           = "${var.autoscale_thresholds["cpu_reservation_low"]}"
   treat_missing_data  = "notBreaching"
