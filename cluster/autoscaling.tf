@@ -27,7 +27,7 @@ resource "aws_autoscaling_policy" "scale_in" {
 // Memory Reservation
 
 resource "aws_cloudwatch_metric_alarm" "cluster_memory_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_high") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_high", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut-High-MemoryReservation"
   alarm_description   = "scale-out pushed by memory-reservation-high"
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "cluster_memory_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cluster_memory_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_low") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_low", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleIn-Low-MemoryReservation"
   alarm_description   = "scale-out pushed by memory-reservation-low"
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "cluster_memory_low" {
 // CPU Reservation
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_high") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_high", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-High"
   alarm_description   = "scale-out pushed by cpu-reservation-high"
@@ -104,7 +104,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_low") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_low", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-Low"
   alarm_description   = "scale-in pushed by cpu-reservation-low"
