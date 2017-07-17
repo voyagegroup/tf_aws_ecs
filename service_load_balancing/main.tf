@@ -1,7 +1,3 @@
-data "aws_ecs_cluster" "cluster" {
-  cluster_name = "${var.cluster_name}"
-}
-
 resource "aws_ecs_task_definition" "container" {
   family                = "${var.container_name}"
   container_definitions = "${var.container_definitions}"
@@ -9,7 +5,7 @@ resource "aws_ecs_task_definition" "container" {
 
 resource "aws_ecs_service" "main" {
   name            = "${var.name}"
-  cluster         = "${data.aws_ecs_cluster.cluster.arn}"
+  cluster         = "${var.cluster_id}"
   task_definition = "${aws_ecs_task_definition.container.arn}"
   iam_role        = "${aws_iam_role.ecs_service.arn}"
 

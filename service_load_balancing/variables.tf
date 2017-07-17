@@ -2,8 +2,12 @@ variable "name" {
   description = "Name of ECS Service"
 }
 
+variable "cluster_id" {
+  description = "ID (ARN) of ECS Cluster"
+}
+
 variable "cluster_name" {
-  description = "Name of ECS Cluster"
+  description = "Name of ECS Cluster using for autoscaling"
 }
 
 variable "iam_assume_role_policy" {
