@@ -9,7 +9,7 @@ A terraform module to provides ecs cluster
 
 ```hcl
 module "ecs_cluster" {
-  source                       = "github.com/voyagegroup/tf_aws_ecs/cluster"
+  source                       = "git@github.com:voyagegroup/tf_aws_ecs//cluster"
   name                         = "ex-app-cluster"
 
   #

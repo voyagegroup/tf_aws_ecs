@@ -14,7 +14,7 @@ A terraform module to provides ecs service balanced on application load balancer
 
 ```hcl
 module "ecs_service" {
-  source                       = "github.com/voyagegroup/tf_aws_ecs/service_load_balancing"
+  source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
   name                         = "ex-app-api-service"
   cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
   target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
