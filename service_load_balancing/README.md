@@ -22,7 +22,7 @@ module "ecs_service" {
   container_name               = "ex-app-api"           // same as "name"          into container_defition
   container_port               = "80"                   // same as "containerPort" into container_defition
   container_log_group          = "ex-app-api/container" // same as "awslogs-group" into container_defition
-  container_definition         = <<TASK_DEFITION
+  container_definitions        = <<TASK_DEFITION
 [
   {
     "name":      "ex-app-api",
