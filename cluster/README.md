@@ -43,7 +43,7 @@ module "ecs_cluster" {
   asg_extra_tags               = [
     {
       key                 = "Name"
-      name                = "example-application"
+      value               = "example-application"
       propagate_at_launch = true
     }
   ]
