@@ -31,7 +31,6 @@ resource "aws_autoscaling_group" "app" {
   }
 }
 
-
 resource "aws_launch_configuration" "app" {
   name_prefix                 = "${aws_ecs_cluster.main.name}-"
   security_groups             = ["${var.security_groups}"]
