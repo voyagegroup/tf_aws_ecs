@@ -20,9 +20,11 @@ module "ecs_service" {
   cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
   target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
 
+  log_group                    = "ex-app-api/container" // same as "awslogs-group" into container_defition
+  log_groups_expiration_days   = 30
+
   container_name               = "ex-app-api"           // same as "name"          into container_defition
   container_port               = "80"                   // same as "containerPort" into container_defition
-  container_log_group          = "ex-app-api/container" // same as "awslogs-group" into container_defition
   container_definitions        = <<TASK_DEFITION
 [
   {
