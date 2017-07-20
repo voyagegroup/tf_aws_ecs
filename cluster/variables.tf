@@ -33,6 +33,11 @@ variable "vpc_zone_identifier" {
   type        = "list"
 }
 
+variable "security_groups" {
+  description = "AWS security group id(s) for container instances launch configuration"
+  type        = "list"
+}
+
 variable "instance_type" {
   description = "AWS containers instance type"
   default     = "t2.small"
@@ -41,11 +46,6 @@ variable "instance_type" {
 variable "ebs_optimized" {
   description = "If true, the launched EC2 instance will be EBS-optimized"
   default     = true
-}
-
-variable "security_groups" {
-  description = "AWS security group id(s) for container instances launch configuration"
-  type        = "list"
 }
 
 variable "user_data" {
@@ -61,6 +61,11 @@ variable "asg_min_size" {
 variable "asg_max_size" {
   description = "Max numbers of servers in AutoScaling Group"
   default     = "2"
+}
+
+variable "asg_default_cooldown" {
+  description = "The amount of time, in seconds, after a scaling activity completes"
+  default     = 150
 }
 
 variable "asg_enabled_metrics" {
@@ -86,11 +91,6 @@ variable "asg_termination_policies" {
   description = "AutoScaling Group termination_policies"
   type        = "list"
   default     = ["OldestInstance"]
-}
-
-variable "asg_default_cooldown" {
-  description = "The amount of time, in seconds, after a scaling activity completes"
-  default     = 150
 }
 
 variable "asg_extra_tags" {
