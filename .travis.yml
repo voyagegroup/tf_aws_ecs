@@ -1,8 +1,11 @@
-branches:
-  only:
-    - master
-
 sudo: false
+dist: trusty
+
+language: generic
 
 script:
   - make all
+
+branches:
+  only:
+    - master
