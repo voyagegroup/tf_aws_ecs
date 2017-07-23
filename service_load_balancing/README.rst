@@ -119,7 +119,7 @@ Enabled autoscaling
 
 See more details about `Service Auto Scaling`_ in the official AWS docs.
 
-.. _Service Auto ScalingService Load Balancing: http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html
+.. _Service Auto Scaling: http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html
 
 
 On ecs-cluster created with our terraform module
