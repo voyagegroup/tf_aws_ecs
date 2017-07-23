@@ -14,15 +14,16 @@ help:
 all: deps validate
 
 deps: $(TERRAFORM)
-	@$< version
+	$(TERRAFORM) version
 
 $(TERRAFORM):
 	curl -L -fsS --retry 2 -o $@.zip $(TERRAFORM_URL)
 	unzip $@.zip && rm -f $@.zip
+	@chmod +x $@
 
 validate: $(TERRAFORM)
-	@echo "[Validate on terraform modules]"
+	@echo "[Validate to terraform modules]"
 	@for tf_dir in $$(find . -type f -name "*.tf" | xargs -I {} dirname {} | uniq | sort); do \
-	  printf "%-30s ... " "$$tf_dir"; \
+	  printf "%-33s ... " "$$tf_dir"; \
 	  $(TERRAFORM) $(@F) $$tf_dir && echo "OK" || IF_ERROR=1; \
 	done; exit $$IF_ERROR
