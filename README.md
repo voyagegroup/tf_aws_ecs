@@ -1,5 +1,10 @@
 # AWS ECS terraform module(s)
 
+[![Build Status][travis-img]][travis-url]
+
+[travis-img]: https://travis-ci.org/voyagegroup/tf_aws_ecs.svg?branch=master
+[travis-url]: https://travis-ci.org/voyagegroup/tf_aws_ecs
+
 A terraform module to provides -
 
 - [ECS Cluster](cluster)
