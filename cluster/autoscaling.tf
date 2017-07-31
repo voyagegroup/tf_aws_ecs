@@ -4,6 +4,24 @@
  * The below resources is optional.
  */
 
+resource "aws_autoscaling_notification" "ok" {
+  group_names   = ["${aws_autoscaling_group.app.name}"]
+  notifications = [
+    "autoscaling:EC2_INSTANCE_LAUNCH",
+    "autoscaling:EC2_INSTANCE_TERMINATE",
+  ]
+  topic_arn     = "${var.autoscale_notification_ok_topic_arn}"
+}
+
+resource "aws_autoscaling_notification" "ng" {
+  group_names   = ["${aws_autoscaling_group.app.name}"]
+  notifications = [
+    "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+    "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
+  ]
+  topic_arn     = "${var.autoscale_notification_ng_topic_arn}"
+}
+
 resource "aws_autoscaling_policy" "scale_out" {
   count                     = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
