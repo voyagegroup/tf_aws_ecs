@@ -109,6 +109,16 @@ variable "asg_extra_tags" {
 
 # AutoScaling
 
+variable "autoscale_notification_ok_topic_arn" {
+  description = "ARN of SNS Topic for notify to autoscaling:{EC2_INSTANCE_LAUNCH,autoscaling:EC2_INSTANCE_TERMINATE}"
+  default     = "" // default as no-notify
+}
+
+variable "autoscale_notification_ng_topic_arn" {
+  description = "ARN of SNS Topic for notify to autoscaling:{EC2_INSTANCE_LAUNCH_ERROR,autoscaling:EC2_INSTANCE_TERMINATE_ERROR}"
+  default     = "" // default as no-notify
+}
+
 variable "autoscale_thresholds" {
   description = "The values against which the specified statistic is compared"
   type        = "map"

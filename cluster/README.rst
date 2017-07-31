@@ -111,15 +111,11 @@ Adding sns-notification for autoscaling-group scales
 
 .. code:: hcl
 
-   #module "ecs_cluster" { ... }
+   module "ecs_cluster" {
+      # ...
 
-   resource "aws_autoscaling_notification" "cluster_status_error" {
-     group_names   = ["${module.ecs_cluster.autoscaling_group_name}"]
-     topic_arn     = "${aws_sns_topic.ex.arn}"
-     notifications = [
-       "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
-       "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
-     ]
+      autoscale_notification_ok_topic_arn = "${aws_sns_topic.ex.arn}"
+      autoscale_notification_ng_topic_arn = "${aws_sns_topic.ex_alert.arn}"
    }
 
 See more details about `Getting SNS Notifications When Your Auto Scaling Group Scales`_ in the official AWS docs.
