@@ -26,7 +26,7 @@ resource "aws_autoscaling_policy" "scale_in" {
 
 // Memory Reservation
 
-resource "aws_cloudwatch_metric_alarm" "cluster_memory_high" {
+resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
   count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_high", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut-High-MemoryReservation"
@@ -51,7 +51,7 @@ resource "aws_cloudwatch_metric_alarm" "cluster_memory_high" {
   ]
 }
 
-resource "aws_cloudwatch_metric_alarm" "cluster_memory_low" {
+resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
   count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_low", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleIn-Low-MemoryReservation"
