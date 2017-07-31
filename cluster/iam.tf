@@ -19,10 +19,10 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_policy" {
-  count      = "${length(var.ecs_instance_iam_policy_arns)}"
+  count      = "${length(var.iam_policy_arns)}"
 
   role       = "${aws_iam_role.ecs_instance.name}"
-  policy_arn = "${element(var.ecs_instance_iam_policy_arns, count.index)}"
+  policy_arn = "${element(var.iam_policy_arns, count.index)}"
 
   depends_on = ["aws_iam_role.ecs_instance"]
 }

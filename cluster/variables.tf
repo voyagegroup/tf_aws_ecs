@@ -4,7 +4,7 @@ variable "name" {
 
 # Container Instance(s)
 
-variable "ecs_instance_iam_policy_arns" {
+variable "iam_policy_arns" {
   description = "IAM policy arns for container instance"
   type        = "list"
   default     = [
