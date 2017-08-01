@@ -5,6 +5,8 @@
  */
 
 resource "aws_autoscaling_notification" "ok" {
+  count         = "${var.autoscale_notification_ok_topic_arn != "" ? 1 : 0}"
+
   group_names   = ["${aws_autoscaling_group.app.name}"]
   notifications = [
     "autoscaling:EC2_INSTANCE_LAUNCH",
@@ -14,6 +16,8 @@ resource "aws_autoscaling_notification" "ok" {
 }
 
 resource "aws_autoscaling_notification" "ng" {
+  count         = "${var.autoscale_notification_ng_topic_arn != "" ? 1 : 0}"
+
   group_names   = ["${aws_autoscaling_group.app.name}"]
   notifications = [
     "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
