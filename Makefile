@@ -2,10 +2,13 @@ OS_TYPE  = $(shell echo $(shell uname) | tr A-Z a-z)
 OS_ARCH := amd64
 
 TERRAFORM         := ./terraform
-TERRAFORM_VERSION := 0.9.11
+TERRAFORM_VERSION := 0.10.4
 TERRAFORM_URL      = https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS_TYPE)_$(OS_ARCH).zip
 
-.PHONY: help all deps validate
+EXCLUDES_DIRS := _test _example .terraform
+MODULE_DIRS    = $(shell find . -type f -name "*.tf" | xargs -I {} dirname {} | grep -v $(foreach _d, $(EXCLUDES_DIRS), -e $(_d)) | uniq | sort)
+
+.PHONY: help all deps clean validate $(MODULE_DIRS)
 .DEFAULT_GOAL := help
 
 help:
@@ -16,14 +19,22 @@ all: deps validate
 deps: $(TERRAFORM)
 	$(TERRAFORM) version
 
+clean:
+	@/bin/rm -f $(TERRAFORM)
+	@$(foreach _d, $(MODULE_DIRS), find $(_d) -type f -name "fixture_*.tf" -delete;)
+
 $(TERRAFORM):
 	curl -L -fsS --retry 2 -o $@.zip $(TERRAFORM_URL)
 	unzip $@.zip && rm -f $@.zip
 	@chmod +x $@
 
-validate: $(TERRAFORM)
+$(MODULE_DIRS):
+	/bin/cp -af _test/tf_fixtures/fixture_*.tf $@/
+	$(TERRAFORM) init -input=false -get-plugins=true $@
+
+validate: $(TERRAFORM) $(MODULE_DIRS)
 	@echo "[Validate to terraform modules]"
-	@for tf_dir in $$(find . -type f -name "*.tf" | xargs -I {} dirname {} | uniq | sort); do \
+	@for tf_dir in $(MODULE_DIRS); do \
 	  printf "%-33s ... " "$$tf_dir"; \
 	  $(TERRAFORM) $(@F) $$tf_dir && echo "OK" || IF_ERROR=1; \
 	done; exit $$IF_ERROR
