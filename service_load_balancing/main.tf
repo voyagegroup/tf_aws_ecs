@@ -37,9 +37,10 @@ resource "aws_ecs_service" "main" {
 }
 
 resource "aws_iam_role" "ecs_service" {
-  name               = "${var.name}-ecs-service-role"
-  path               = "${var.iam_path}"
-  assume_role_policy = "${var.iam_assume_role_policy}"
+  name                  = "${var.name}-ecs-service-role"
+  path                  = "${var.iam_path}"
+  force_detach_policies = true
+  assume_role_policy    = "${var.iam_assume_role_policy}"
 }
 
 resource "aws_iam_role_policy" "ecs_service" {

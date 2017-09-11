@@ -1,2 +1,7 @@
+.terraform
 terraform
 terraform.zip
+
+# For testing
+/**/fixture_*.tf
+!/_test/**/fixture_*.tf

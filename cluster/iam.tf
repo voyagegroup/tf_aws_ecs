@@ -1,7 +1,8 @@
 resource "aws_iam_role" "ecs_instance" {
-  name = "${aws_ecs_cluster.main.name}-ecs-instance-role"
+  name                  = "${aws_ecs_cluster.main.name}-ecs-instance-role"
+  force_detach_policies = true
 
-  assume_role_policy = <<EOF
+  assume_role_policy    = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
