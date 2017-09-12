@@ -35,11 +35,6 @@ Basic Usage
      region  = "${var.region}"
    }
 
-   provider "template" {
-     # https://github.com/terraform-providers/terraform-provider-template/releases
-     version = "~> 0.1"
-   }
-
    # Pre-require your resources declaration (as may be necessary)
    # The following related sources is out of scope on this module
    #resource "aws_key_pair"       "xxx" {}
