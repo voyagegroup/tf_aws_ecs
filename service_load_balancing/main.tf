@@ -50,8 +50,8 @@ resource "aws_iam_role_policy" "ecs_service" {
 }
 
 resource "aws_cloudwatch_log_group" "app" {
-  count             = "${ var.log_group != "" ? 1 : 0 }"
+  count             = "${ length(var.log_groups) }"
 
-  name              = "${var.log_group}"
+  name              = "${var.log_groups[count.index]}"
   retention_in_days = "${var.log_groups_expiration_days}"
 }
