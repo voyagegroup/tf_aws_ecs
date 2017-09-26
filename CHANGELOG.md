@@ -1,3 +1,7 @@
+## 0.0.3 (Sep 26, 2017)
+
+* **BC BREAKS:** service_load_balancing: variable changed name, and type. log_group -> log_groups
+
 ## 0.0.2 (Sep 11, 2017)
 
 * **BC BREAKS:** tf_aws_ecs require terraform >= v0.10
