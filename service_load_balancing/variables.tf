@@ -114,9 +114,10 @@ variable "container_definitions" {
   type        = "string"
 }
 
-variable "log_group" {
-  description = "The Name of CloudWatch Log Group for ECS Task (Container)"
-  default     = "" // It it is empty, no creattion cloudwatch_log_group
+variable "log_groups" {
+  description = "The List of CloudWatch Log Group Name for ECS Task (Container)"
+  type        = "list"
+  default     = []
 }
 
 variable "log_groups_expiration_days" {
