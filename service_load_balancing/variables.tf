@@ -102,11 +102,16 @@ variable "target_group_arn" {
 # Container
 
 variable "container_name" {
-  description = "AWS containers (family) name"
+  description = "AWS containers name"
 }
 
 variable "container_port" {
   description = "AWS containers port"
+}
+
+variable "container_family" {
+  description = "AWS containers family name"
+  type        = "string"
 }
 
 variable "container_definitions" {

@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "container" {
-  family                = "${var.container_name}"
+  family                = "${var.container_family}"
   container_definitions = "${var.container_definitions}"
 }
 
