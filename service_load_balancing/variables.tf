@@ -109,6 +109,12 @@ variable "container_port" {
   description = "AWS containers port"
 }
 
+variable "container_family" {
+  description = "AWS containers family name"
+  type        = "string"
+  default     = ""
+}
+
 variable "container_definitions" {
   description = "AWS ECS Task definitions"
   type        = "string"
