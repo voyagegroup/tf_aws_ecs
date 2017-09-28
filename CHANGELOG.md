@@ -1,3 +1,8 @@
+## 0.0.4 (Sep 28, 2017)
+
+* **BC BREAKS:** service_load_balancing: #6 split names (container, container family)
+  * new variable: `container_family` using task definitions
+
 ## 0.0.3 (Sep 26, 2017)
 
 * **BC BREAKS:** service_load_balancing: variable changed name, and type. log_group -> log_groups
