@@ -55,6 +55,7 @@ Basic Usage
 
      container_name               = "ex-app-api" // same as "name"          into container_defition
      container_port               = "80"         // same as "containerPort" into container_defition
+     container_family             = "ex-app-api"
      container_definitions        = <<TASK_DEFITION
    [
      {
