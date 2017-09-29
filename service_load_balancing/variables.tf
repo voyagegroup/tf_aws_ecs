@@ -102,7 +102,7 @@ variable "target_group_arn" {
 # Container
 
 variable "container_name" {
-  description = "AWS containers name"
+  description = "AWS containers name as related load_balancer"
 }
 
 variable "container_port" {
