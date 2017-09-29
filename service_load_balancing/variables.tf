@@ -135,6 +135,7 @@ variable "log_groups_expiration_days" {
 variable "autoscale_thresholds" {
   description = "The values against which the specified statistic is compared"
   type        = "map"
+  # No apply if empty
   default     = {
     # Supporting thresholds as berow
     #cpu_high    = // e.g. 75
@@ -146,10 +147,12 @@ variable "autoscale_thresholds" {
 
 variable "autoscale_max_capacity" {
   description = "The max capacity of the scalable target"
+  default     = 1
 }
 
 variable "autoscale_min_capacity" {
   description = "The min capacity of the scalable target"
+  default     = 1
 }
 
 variable "autoscale_cooldown" {
