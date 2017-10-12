@@ -1,3 +1,9 @@
+## 0.0.5 (Oct 12, 2017)
+
+* service_load_balancing: ignore task_definition updating into aws_ecs_service
+  * for cooperating with the ecs deployment process
+  * related [#1](https://github.com/voyagegroup/tf_aws_ecs/issues/1)
+
 ## 0.0.4 (Sep 28, 2017)
 
 * **BC BREAKS:** service_load_balancing: #6 split names (container, container family)
