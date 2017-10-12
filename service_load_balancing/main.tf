@@ -30,6 +30,7 @@ resource "aws_ecs_service" "main" {
     #       https://github.com/hashicorp/terraform/issues/3116
     ignore_changes = [
       "desired_count",
+      "task_definition",
     ]
   }
 

@@ -86,6 +86,18 @@ Basic Usage
    }
 
 
+A note of caution
+-----------------
+
+Currently `aws_ecs_service.main.task_definition` is ignored by lifecycle
+cause task_definition is updated often via continuous ecs deployment.
+
+Although it is a difficult decision, we hope to support dynamic lifecycle
+featured by Terraform.
+
+See detail: [#1](https://github.com/voyagegroup/tf_aws_ecs/issues/1)
+
+
 Advanced Usage
 ==============
 
