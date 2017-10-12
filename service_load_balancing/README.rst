@@ -48,15 +48,15 @@ Basic Usage
    module "ecs_service" {
      source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
      name                         = "ex-app-api-service"
-     cluser_id                    = "${aws_ecs_cluster.ex_app.id}"
+     cluster_id                   = "${aws_ecs_cluster.ex_app.id}"
      cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
      target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
      #desired_count               = 4
 
-     container_name               = "ex-app-api" // same as "name"          into container_defition
-     container_port               = "80"         // same as "containerPort" into container_defition
+     container_name               = "ex-app-api" // same as "name"          into container_definition
+     container_port               = "80"         // same as "containerPort" into container_definition
      container_family             = "ex-app-api"
-     container_definitions        = <<TASK_DEFITION
+     container_definitions        = <<TASK_DEFINITION
    [
      {
        "name":      "ex-app-api",
@@ -79,9 +79,9 @@ Basic Usage
        }
      }
    ]
-   TASK_DEFITION
+   TASK_DEFINITION
 
-     log_group                    = "ex-app-api/container" // same as "awslogs-group" at container_defition
+     log_group                    = "ex-app-api/container" // same as "awslogs-group" at container_definition
      log_groups_expiration_days   = 30
    }
 
