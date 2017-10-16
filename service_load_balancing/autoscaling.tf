@@ -44,8 +44,7 @@ resource "aws_appautoscaling_policy" "scale_out" {
     metric_aggregation_type = "Average"
 
     step_adjustment {
-      metric_interval_lower_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_lower_bound", "")}"
-      metric_interval_upper_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_upper_bound", "")}"
+      metric_interval_lower_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_lower_bound")}"
       scaling_adjustment          = "${lookup(var.scale_out_step_adjustment, "scaling_adjustment")}"
     }
   }
@@ -67,8 +66,7 @@ resource "aws_appautoscaling_policy" "scale_in" {
     metric_aggregation_type = "Average"
 
     step_adjustment {
-      metric_interval_lower_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_lower_bound", "")}"
-      metric_interval_upper_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_upper_bound", "")}"
+      metric_interval_upper_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_upper_bound")}"
       scaling_adjustment          = "${lookup(var.scale_in_step_adjustment, "scaling_adjustment")}"
     }
   }
