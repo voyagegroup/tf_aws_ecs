@@ -1,3 +1,10 @@
+## 0.1.0 (Oct 16, 2017)
+
+* Support only terraform-provider-aws >= 1.0.0
+* service_load_balancing: Remove unused variables
+  * `scale_in_step_adjustment.metric_interval_upper_bound`
+  * `scale_out_step_adjustment.metric_interval_lower_bound`
+
 ## 0.0.5 (Oct 12, 2017)
 
 * service_load_balancing: ignore task_definition updating into aws_ecs_service
