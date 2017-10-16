@@ -31,43 +31,49 @@ resource "aws_appautoscaling_target" "main" {
 }
 
 resource "aws_appautoscaling_policy" "scale_out" {
-  count                   = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count              = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
-  adjustment_type         = "ChangeInCapacity"
-  cooldown                = "${var.autoscale_cooldown}"
-  metric_aggregation_type = "Average"
-  name                    = "${aws_ecs_service.main.name}-ecs-service-scale-out"
-  resource_id             = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
-  scalable_dimension      = "ecs:service:DesiredCount"
-  service_namespace       = "ecs"
+  name               = "${aws_ecs_service.main.name}-ecs-service-scale-out"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
 
-  step_adjustment {
-    metric_interval_lower_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_lower_bound", "")}"
-    metric_interval_upper_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_upper_bound", "")}"
-    scaling_adjustment          = "${lookup(var.scale_out_step_adjustment, "scaling_adjustment")}"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = "${var.autoscale_cooldown}"
+    metric_aggregation_type = "Average"
+
+    step_adjustment {
+      metric_interval_lower_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_lower_bound", "")}"
+      metric_interval_upper_bound = "${lookup(var.scale_out_step_adjustment, "metric_interval_upper_bound", "")}"
+      scaling_adjustment          = "${lookup(var.scale_out_step_adjustment, "scaling_adjustment")}"
+    }
   }
 
-  depends_on = ["aws_appautoscaling_target.main"]
+  depends_on         = ["aws_appautoscaling_target.main"]
 }
 
 resource "aws_appautoscaling_policy" "scale_in" {
-  count                   = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count              = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
-  adjustment_type         = "ChangeInCapacity"
-  cooldown                = "${var.autoscale_cooldown}"
-  metric_aggregation_type = "Average"
-  name                    = "${aws_ecs_service.main.name}-ecs-service-scale-in"
-  resource_id             = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
-  scalable_dimension      = "ecs:service:DesiredCount"
-  service_namespace       = "ecs"
+  name               = "${aws_ecs_service.main.name}-ecs-service-scale-in"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
 
-  step_adjustment {
-    metric_interval_lower_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_lower_bound", "")}"
-    metric_interval_upper_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_upper_bound", "")}"
-    scaling_adjustment          = "${lookup(var.scale_in_step_adjustment, "scaling_adjustment")}"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = "${var.autoscale_cooldown}"
+    metric_aggregation_type = "Average"
+
+    step_adjustment {
+      metric_interval_lower_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_lower_bound", "")}"
+      metric_interval_upper_bound = "${lookup(var.scale_in_step_adjustment, "metric_interval_upper_bound", "")}"
+      scaling_adjustment          = "${lookup(var.scale_in_step_adjustment, "scaling_adjustment")}"
+    }
   }
 
-  depends_on = ["aws_appautoscaling_target.main"]
+  depends_on         = ["aws_appautoscaling_target.main"]
 }
 
 // Memory Utilization

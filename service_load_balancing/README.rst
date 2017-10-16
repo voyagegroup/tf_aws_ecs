@@ -30,13 +30,13 @@ Basic Usage
 
    provider "aws" {
      # https://github.com/terraform-providers/terraform-provider-aws/releases
-     version = "~> 0.1"
+     version = "~> 1.0"
      region  = "${var.region}"
    }
 
    provider "template" {
      # https://github.com/terraform-providers/terraform-provider-template/releases
-     version = "~> 0.1"
+     version = "~> 1.0"
    }
 
    # Pre-require your resources declaration (as may be necessary)
