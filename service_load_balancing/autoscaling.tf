@@ -12,11 +12,31 @@ resource "aws_iam_role" "service_autoscale" {
   assume_role_policy = "${file("${path.module}/ecs_service_assume_role.json")}"
 }
 
-resource "aws_iam_role_policy_attachment" "service_autoscale" {
+resource "aws_iam_role_policy" "service_autoscale" {
   count      = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
-  role       = "${aws_iam_role.service_autoscale.name}"
-  policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AWSApplicationAutoscalingECSServicePolicy"
+  role   = "${aws_iam_role.service_autoscale.id}"
+  // Same as service-linked role arn:aws:iam::aws:policy/aws-service-role/AWSApplicationAutoscalingECSServicePolicy
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecs:DescribeServices",
+                "ecs:UpdateService",
+                "cloudwatch:PutMetricAlarm",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:DeleteAlarms"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+POLICY
 }
 
 resource "aws_appautoscaling_target" "main" {

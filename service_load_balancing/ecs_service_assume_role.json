@@ -5,7 +5,7 @@
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "Service": "application-autoscaling.amazonaws.com"
+        "Service": "ecs.application-autoscaling.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
