@@ -1,6 +1,11 @@
+## 0.1.2 (Dec 15, 2017)
+
+* service_load_balancing: #10 update iam role policy for appautoscaling
+
 ## 0.1.1 (Dec 15, 2017)
 
 * service_load_balancing: #9 update iam role policy for appautoscaling
+  * **this proposal includes bugs**, fixed on v0.1.2
 
 ## 0.1.0 (Oct 16, 2017)
 
