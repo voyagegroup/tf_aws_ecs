@@ -1,3 +1,7 @@
+## 0.1.1 (Dec 15, 2017)
+
+* service_load_balancing: #9 update iam role policy for appautoscaling
+
 ## 0.1.0 (Oct 16, 2017)
 
 * Support only terraform-provider-aws >= 1.0.0
