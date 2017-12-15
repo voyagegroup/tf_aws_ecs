@@ -16,7 +16,7 @@ resource "aws_iam_role_policy_attachment" "service_autoscale" {
   count      = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
 
   role       = "${aws_iam_role.service_autoscale.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+  policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AWSApplicationAutoscalingECSServicePolicy"
 }
 
 resource "aws_appautoscaling_target" "main" {
