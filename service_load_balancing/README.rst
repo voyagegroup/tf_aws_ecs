@@ -117,6 +117,7 @@ Enabled autoscaling
 
      # ...
 
+     autoscale_iam_role_arn        = "${data.aws_iam_role.ecs_autoscale_service_linked_role.arn}"
      autoscale_min_capacity        = 2
      autoscale_max_capacity        = 8
      autoscale_thresholds          = {
@@ -139,6 +140,10 @@ Enabled autoscaling
        metric_interval_upper_bound = 0
        scaling_adjustment          = -1
      }
+   }
+
+   data "aws_iam_role" "ecs_autoscale_service_linked_role" {
+     name = "AWSServiceRoleForApplicationAutoScaling_ECSService"
    }
 
 See more details about `Service Auto Scaling`_ in the official AWS docs.

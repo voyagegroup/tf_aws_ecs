@@ -5,7 +5,7 @@
  */
 
 resource "aws_iam_role" "service_autoscale" {
-  count              = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count              = "${ var.autoscale_iam_role_arn != "" ? 0 : 1 }"
 
   name               = "${var.name}-ecs-service-autoscale"
   path               = "${var.iam_path}"
@@ -13,7 +13,7 @@ resource "aws_iam_role" "service_autoscale" {
 }
 
 resource "aws_iam_role_policy" "service_autoscale" {
-  count      = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count      = "${ var.autoscale_iam_role_arn != "" ? 0 : 1 }"
 
   role   = "${aws_iam_role.service_autoscale.id}"
   // Same as service-linked role arn:aws:iam::aws:policy/aws-service-role/AWSApplicationAutoscalingECSServicePolicy
@@ -45,7 +45,7 @@ resource "aws_appautoscaling_target" "main" {
   max_capacity       = "${var.autoscale_max_capacity}"
   min_capacity       = "${var.autoscale_min_capacity}"
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
-  role_arn           = "${aws_iam_role.service_autoscale.arn}"
+  role_arn           = "${ var.autoscale_iam_role_arn != "" ? var.autoscale_iam_role_arn : aws_iam_role.service_autoscale.arn }"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
