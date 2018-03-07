@@ -1,4 +1,4 @@
-## 0.2.0 (Unreleased)
+## 0.2.0 (Mar 7, 2018)
 
 * **BC BREAKS:** service_load_balancing: #11 No creating aws_iam_role for application autoscaling
   * new variable `autoscale_iam_role_arn` that should specify if enabled autoscaling
