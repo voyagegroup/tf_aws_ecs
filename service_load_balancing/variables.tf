@@ -133,7 +133,8 @@ variable "log_groups_expiration_days" {
 # AutoScaling
 
 variable "autoscale_iam_role_arn" {
-  description = "Specifies the IAM Role for appautoscaling"
+  description = "Specifies the IAM Role for ecs appautoscaling"
+  default     = "" // not creates if empty
 }
 
 variable "autoscale_thresholds" {
