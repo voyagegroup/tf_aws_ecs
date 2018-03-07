@@ -1,3 +1,9 @@
+## 0.2.0 (Unreleased)
+
+* **BC BREAKS:** service_load_balancing: #11 No creating aws_iam_role for application autoscaling
+  * new variable `autoscale_iam_role_arn` that should specify if enabled autoscaling
+  * related: https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html
+
 ## 0.1.2 (Dec 15, 2017)
 
 * service_load_balancing: #10 update iam role policy for appautoscaling
