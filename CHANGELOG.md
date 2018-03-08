@@ -1,3 +1,8 @@
+## 0.2.1 (Unreleased)
+
+* cluster: support specify iam path for role and instance_profile
+  * new variable: `iam_path`
+
 ## 0.2.0 (Mar 7, 2018)
 
 * **BC BREAKS:** service_load_balancing: #11 No creating aws_iam_role for application autoscaling
