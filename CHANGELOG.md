@@ -1,6 +1,6 @@
-## 0.2.1 (Unreleased)
+## 0.2.1 (Mar 14, 2018)
 
-* cluster: support specify iam path for role and instance_profile
+* cluster: support specify iam path for role and instance_profile (default: '/')
   * new variable: `iam_path`
 
 ## 0.2.0 (Mar 7, 2018)
