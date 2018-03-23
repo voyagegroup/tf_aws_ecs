@@ -46,6 +46,33 @@ resource "aws_autoscaling_policy" "scale_in" {
   cooldown                  = "${var.autoscale_cooldown}"
 }
 
+// CPU Utilization
+
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
+  count               = "${ lookup(var.autoscale_thresholds, "cpu_utilization", "") != "" ? 1 : 0 }"
+
+  alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization"
+  alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-utilization"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "${var.autoscale_period}"
+  statistic           = "Average"
+  threshold           = "${var.autoscale_thresholds["cpu_utilization"]}"
+  treat_missing_data  = "notBreaching"
+
+  dimensions {
+    ClusterName = "${aws_ecs_cluster.main.name}"
+  }
+
+  ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
+  alarm_actions       = [
+    "${aws_autoscaling_policy.scale_out.arn}",
+    "${compact(var.scale_out_more_alarm_actions)}",
+  ]
+}
+
 // Memory Reservation
 
 resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {

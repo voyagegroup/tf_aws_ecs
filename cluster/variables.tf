@@ -129,6 +129,7 @@ variable "autoscale_thresholds" {
   type        = "map"
   default     = {
     # Supporting thresholds as berow
+    #cpu_utilization         = // e.g. 75
     #cpu_reservation_high    = // e.g. 75
     #cpu_reservation_low     = // e.g.  5
     #memory_reservation_high = // e.g. 75
