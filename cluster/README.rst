@@ -97,10 +97,12 @@ Enabled autoscaling
      autoscale_thresholds         = {
        memory_reservation_high = 75
        memory_reservation_low  = 40
-       // cpu_utilization_high =
-       // cpu_utilization_low  =
+       // cpu_util_high        =
+       // cpu_util_low         =
        // cpu_reservation_high =
        // cpu_reservation_low  =
+       // memory_util_high     =
+       // memory_util_low      =
      }
      #scale_out_ok_actions        = []
      scale_out_more_alarm_actions = ["${aws_sns_topic.ex_alert.arn}"]
