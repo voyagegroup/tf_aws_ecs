@@ -129,7 +129,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
   count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_low", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-Low"
-  alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by memory-reservation-low"
+  alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-reservation-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
