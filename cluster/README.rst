@@ -97,7 +97,8 @@ Enabled autoscaling
      autoscale_thresholds         = {
        memory_reservation_high = 75
        memory_reservation_low  = 40
-       // cpu_utilization      =
+       // cpu_utilization_high =
+       // cpu_utilization_low  =
        // cpu_reservation_high =
        // cpu_reservation_low  =
      }

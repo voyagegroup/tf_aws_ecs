@@ -48,18 +48,18 @@ resource "aws_autoscaling_policy" "scale_in" {
 
 // CPU Utilization
 
-resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_utilization", "") != "" ? 1 : 0 }"
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
+  count               = "${ lookup(var.autoscale_thresholds, "cpu_utilization_high", "") != "" ? 1 : 0 }"
 
-  alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization"
-  alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-utilization"
+  alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-High"
+  alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-utilization-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["cpu_utilization"]}"
+  threshold           = "${var.autoscale_thresholds["cpu_utilization_high"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -70,6 +70,31 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
   alarm_actions       = [
     "${aws_autoscaling_policy.scale_out.arn}",
     "${compact(var.scale_out_more_alarm_actions)}",
+  ]
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
+  count               = "${ lookup(var.autoscale_thresholds, "cpu_utilization_low", "") != "" ? 1 : 0 }"
+
+  alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-Low"
+  alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-utilization-low"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "${var.autoscale_period}"
+  statistic           = "Average"
+  threshold           = "${var.autoscale_thresholds["cpu_utilization_low"]}"
+  treat_missing_data  = "notBreaching"
+
+  dimensions {
+    ClusterName = "${aws_ecs_cluster.main.name}"
+  }
+
+  ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
+  alarm_actions       = [
+    "${aws_autoscaling_policy.scale_in.arn}",
+    "${compact(var.scale_in_more_alarm_actions)}",
   ]
 }
 
