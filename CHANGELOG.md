@@ -1,3 +1,12 @@
+## 0.3.0 (Unreleased)
+
+* cluster: Parameterized to evaluation_periods
+  * `scale_out_evaluation_periods` (default: 1)
+  * `scale_in_evaluation_periods` (default: 2)
+* service_load_balancing: Parameterized to evaluation_periods
+  * `scale_out_evaluation_periods` (default: 1)
+  * `scale_in_evaluation_periods` (default: 2)
+
 ## 0.2.2 (Mar 26, 2018)
 
 * cluster: support more autoscaling thresholdsthreads from #12

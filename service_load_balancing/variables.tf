@@ -183,6 +183,16 @@ variable "scale_in_step_adjustment" {
   }
 }
 
+variable "scale_out_evaluation_periods" {
+  description = "The number of evaluation periods to scale out"
+  default     = 1
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The number of evaluation periods to scale in"
+  default     = 2
+}
+
 variable "scale_out_ok_actions" {
   description = "For scale-out as same as ok actions for cloudwatch alarms"
   type        = "list"

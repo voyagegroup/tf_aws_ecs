@@ -150,6 +150,16 @@ variable "autoscale_cooldown" {
   default     = 300
 }
 
+variable "scale_out_evaluation_periods" {
+  description = "The number of evaluation periods to scale out"
+  default     = 1
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The number of evaluation periods to scale in"
+  default     = 2
+}
+
 variable "scale_out_adjustment" {
   description = "The number of instances by which to scale out"
   default     = 1
