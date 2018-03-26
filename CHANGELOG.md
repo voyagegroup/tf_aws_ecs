@@ -1,3 +1,11 @@
+## 0.2.2 (Mar 26, 2018)
+
+* cluster: support more autoscaling thresholdsthreads from #12
+  * cpu_util_high
+  * cpu_util_low
+  * memory_util_high
+  * memory_util_low
+
 ## 0.2.1 (Mar 14, 2018)
 
 * cluster: support specify iam path for role and instance_profile (default: '/')
