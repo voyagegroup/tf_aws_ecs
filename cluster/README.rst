@@ -94,20 +94,23 @@ Enabled autoscaling
 
      # ...
 
-     autoscale_thresholds         = {
-       memory_reservation_high = 75
-       memory_reservation_low  = 40
-       // cpu_util_high        =
-       // cpu_util_low         =
-       // cpu_reservation_high =
-       // cpu_reservation_low  =
-       // memory_util_high     =
-       // memory_util_low      =
-     }
      #scale_out_ok_actions        = []
      scale_out_more_alarm_actions = ["${aws_sns_topic.ex_alert.arn}"]
+     scale_out_thresholds         = {
+       memory_reservation = 75
+       // cpu_util        =
+       // cpu_reservation =
+       // memory_util     =
+     }
+
      #scale_in_ok_actions         = []
      #scale_in_more_alarm_actions = []
+     scale_in_thresholds          = {
+       memory_reservation = 40
+       // cpu_util        =
+       // cpu_reservation =
+       // memory_util     =
+     }
    }
 
 See more details about `Scaling a Cluster`_ `What Is Auto Scaling?`_ in the official AWS docs.

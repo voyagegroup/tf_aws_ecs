@@ -137,19 +137,6 @@ variable "autoscale_iam_role_arn" {
   default     = "" // not creates if empty
 }
 
-variable "autoscale_thresholds" {
-  description = "The values against which the specified statistic is compared"
-  type        = "map"
-  # No apply if empty
-  default     = {
-    # Supporting thresholds as berow
-    #cpu_high    = // e.g. 75
-    #cpu_row     = // e.g.  5
-    #memory_high = // e.g. 75
-    #memory_row  = // e.g. 40
-  }
-}
-
 variable "autoscale_max_capacity" {
   description = "The max capacity of the scalable target"
   default     = 1
@@ -165,6 +152,19 @@ variable "autoscale_cooldown" {
   default     = 300
 }
 
+# AutoScaling > scale-out
+
+variable "scale_out_thresholds" {
+  description = "The values against which the specified statistic is compared for scale_out"
+  type        = "map"
+  # No apply if empty
+  default     = {
+    # Supporting thresholds as berow
+    #cpu    = // e.g. 75
+    #memory = // e.g. 75
+  }
+}
+
 variable "scale_out_step_adjustment" {
   description = "The attributes of step scaling policy"
   type        = "map"
@@ -174,23 +174,9 @@ variable "scale_out_step_adjustment" {
   }
 }
 
-variable "scale_in_step_adjustment" {
-  description = "The attributes of step scaling policy"
-  type        = "map"
-  default     = {
-    metric_interval_upper_bound = 0
-    scaling_adjustment          = -1
-  }
-}
-
 variable "scale_out_evaluation_periods" {
   description = "The number of evaluation periods to scale out"
   default     = 1
-}
-
-variable "scale_in_evaluation_periods" {
-  description = "The number of evaluation periods to scale in"
-  default     = 2
 }
 
 variable "scale_out_ok_actions" {
@@ -205,6 +191,8 @@ variable "scale_out_more_alarm_actions" {
   default     = []
 }
 
+# AutoScaling > scale-in
+
 variable "scale_in_ok_actions" {
   description = "For scale-in as same as ok actions for cloudwatch alarms"
   type        = "list"
@@ -215,4 +203,29 @@ variable "scale_in_more_alarm_actions" {
   description = "For scale-in as same as alarm actions for cloudwatch alarms"
   type        = "list"
   default     = []
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The number of evaluation periods to scale in"
+  default     = 2
+}
+
+variable "scale_in_thresholds" {
+  description = "The values against which the specified statistic is compared for scale_in"
+  type        = "map"
+  # No apply if empty
+  default     = {
+    # Supporting thresholds as berow
+    #cpu    = // e.g.  5
+    #memory = // e.g. 40
+  }
+}
+
+variable "scale_in_step_adjustment" {
+  description = "The attributes of step scaling policy"
+  type        = "map"
+  default     = {
+    metric_interval_upper_bound = 0
+    scaling_adjustment          = -1
+  }
 }

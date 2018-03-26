@@ -1,5 +1,74 @@
 ## 0.3.0 (Unreleased)
 
+**BC BREAKS:** cluster & service_load_balancing module: variable `autoscale_thresholds` splits
+to `scale_out_thresholds` / `scale_in_thresholds`
+
+Code migrations example:
+
+- cluster:
+
+```hcl
+# Before:
+module "ex_ecs_cluster" {
+  source                    = "git@github.com:voyagegroup/tf_aws_ecs?ref=v0.2.2//cluster"
+  # ...
+  autoscale_thresholds      = {
+    cpu_reservation_high    = 70
+    cpu_reservation_low     = 10
+    memory_reservation_high = 80
+    memory_reservation_low  = 20
+  }
+}
+
+# After:
+module "ex_ecs_cluster" {
+  source               = "git@github.com:voyagegroup/tf_aws_ecs?ref=v0.3.0//cluster"
+  # ...
+  scale_out_thresholds = {
+    cpu_util           = 70
+    cpu_reservation    = 70
+    memory_util        = 80
+    memory_reservation = 80
+  }
+  scale_in_thresholds  = {
+    cpu_util           = 70
+    cpu_reservation    = 10
+    memory_util        = 20
+    memory_reservation = 20
+  }
+}
+```
+
+- service_load_balancing:
+
+```hcl
+# Before:
+module "ex_ecs_service" {
+  source               = "git@github.com:voyagegroup/tf_aws_ecs?ref=v0.2.2//service_load_balancing"
+  # ...
+  autoscale_thresholds = {
+    cpu_high    = 60
+    cpu_low     =  8
+    memory_high = 75
+    memory_low  = 10
+  }
+}
+
+# After:
+module "ex_ecs_service" {
+  source               = "git@github.com:voyagegroup/tf_aws_ecs?ref=v0.3.0//service_load_balancing"
+  # ...
+  scale_out_thresholds = {
+    cpu    = 60
+    memory = 75
+  }
+  scale_in_thresholds  = {
+    cpu    =  8
+    memory = 10
+  }
+}
+```
+
 * cluster: Parameterized to evaluation_periods
   * `scale_out_evaluation_periods` (default: 1)
   * `scale_in_evaluation_periods` (default: 2)

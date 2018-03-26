@@ -120,22 +120,24 @@ Enabled autoscaling
      autoscale_iam_role_arn        = "${data.aws_iam_role.ecs_autoscale_service_linked_role.arn}"
      autoscale_min_capacity        = 2
      autoscale_max_capacity        = 8
-     autoscale_thresholds          = {
-       memory_high = 75
-       memory_low  = 40
-       // cpu_high =
-       // cpu_low  =
-     }
 
      #scale_out_ok_actions         = []
      scale_out_more_alarm_actions  = ["${aws_sns_topic.ex_alert.arn}"]
+     scale_out_thresholds          = {
+       cpu    = 80
+       memory = 75
+     }
      scale_out_step_adjustment     = {
        metric_interval_lower_bound = 0
        scaling_adjustment          = 1
      }
 
-     #scale_in_actions             = []
-     #scale_out_more_alarm_actions = []
+     #scale_in_ok_actions          = []
+     #scale_in_more_alarm_actions  = []
+     scale_in_thresholds           = {
+       cpu    = 10
+       memory = 20
+     }
      scale_in_step_adjustment      = {
        metric_interval_upper_bound = 0
        scaling_adjustment          = -1
