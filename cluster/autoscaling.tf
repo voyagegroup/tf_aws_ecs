@@ -27,7 +27,7 @@ resource "aws_autoscaling_notification" "ng" {
 }
 
 resource "aws_autoscaling_policy" "scale_out" {
-  count                     = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count                     = "${ length(keys(var.scale_out_thresholds)) != 0 ? 1 : 0 }"
 
   name                      = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleOut"
   autoscaling_group_name    = "${aws_autoscaling_group.app.name}"
@@ -37,7 +37,7 @@ resource "aws_autoscaling_policy" "scale_out" {
 }
 
 resource "aws_autoscaling_policy" "scale_in" {
-  count                     = "${ length(keys(var.autoscale_thresholds)) != 0 ? 1 : 0 }"
+  count                     = "${ length(keys(var.scale_in_thresholds)) != 0 ? 1 : 0 }"
 
   name                      = "${aws_ecs_cluster.main.name}-ECSCluster-ScaleIn"
   autoscaling_group_name    = "${aws_autoscaling_group.app.name}"
@@ -49,7 +49,7 @@ resource "aws_autoscaling_policy" "scale_in" {
 // Memory Utilization
 
 resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_util_high", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_out_thresholds, "memory_util", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryUtilization-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by memory-util-high"
@@ -59,7 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["memory_util_high"]}"
+  threshold           = "${var.scale_out_thresholds["memory_util"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_util_low", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_in_thresholds, "memory_util", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-util-low"
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["memory_util_low"]}"
+  threshold           = "${var.scale_in_thresholds["memory_util"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -101,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
 // CPU Utilization
 
 resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_util_high", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_out_thresholds, "cpu_util", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-util-high"
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["cpu_util_high"]}"
+  threshold           = "${var.scale_out_thresholds["cpu_util"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -126,7 +126,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_util_low", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_in_thresholds, "cpu_util", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-util-low"
@@ -136,7 +136,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["cpu_util_low"]}"
+  threshold           = "${var.scale_in_thresholds["cpu_util"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -153,7 +153,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
 // Memory Reservation
 
 resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_high", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_out_thresholds, "memory_reservation", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by memory-reservation-high"
@@ -163,7 +163,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["memory_reservation_high"]}"
+  threshold           = "${var.scale_out_thresholds["memory_reservation"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -178,7 +178,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "memory_reservation_low", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_in_thresholds, "memory_reservation", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-reservation-low"
@@ -188,7 +188,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["memory_reservation_low"]}"
+  threshold           = "${var.scale_in_thresholds["memory_reservation"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -205,7 +205,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
 // CPU Reservation
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_high", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_out_thresholds, "cpu_reservation", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-reservation-high"
@@ -215,7 +215,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["cpu_reservation_high"]}"
+  threshold           = "${var.scale_out_thresholds["cpu_reservation"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {
@@ -230,7 +230,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
-  count               = "${ lookup(var.autoscale_thresholds, "cpu_reservation_low", "") != "" ? 1 : 0 }"
+  count               = "${ lookup(var.scale_in_thresholds, "cpu_reservation", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-reservation-low"
@@ -240,7 +240,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
   namespace           = "AWS/ECS"
   period              = "${var.autoscale_period}"
   statistic           = "Average"
-  threshold           = "${var.autoscale_thresholds["cpu_reservation_low"]}"
+  threshold           = "${var.scale_in_thresholds["cpu_reservation"]}"
   treat_missing_data  = "notBreaching"
 
   dimensions {

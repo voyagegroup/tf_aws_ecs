@@ -124,22 +124,6 @@ variable "autoscale_notification_ng_topic_arn" {
   default     = "" // default as no-notify
 }
 
-variable "autoscale_thresholds" {
-  description = "The values against which the specified statistic is compared"
-  type        = "map"
-  default     = {
-    # Supporting thresholds as berow
-    #cpu_util_high           = // e.g. 75
-    #cpu_util_low            = // e.g.  5
-    #cpu_reservation_high    = // e.g. 75
-    #cpu_reservation_low     = // e.g.  5
-    #memory_util_high        = // e.g. 75
-    #memory_util_low         = // e.g. 40
-    #memory_reservation_high = // e.g. 75
-    #memory_reservation_low  = // e.g. 40
-  }
-}
-
 variable "autoscale_period" {
   description = "The period in seconds over which the specified applied for autoscaling"
   default     = 300
@@ -150,24 +134,18 @@ variable "autoscale_cooldown" {
   default     = 300
 }
 
-variable "scale_out_evaluation_periods" {
-  description = "The number of evaluation periods to scale out"
-  default     = 1
-}
+# AutoScaling > scale-out
 
-variable "scale_in_evaluation_periods" {
-  description = "The number of evaluation periods to scale in"
-  default     = 2
-}
-
-variable "scale_out_adjustment" {
-  description = "The number of instances by which to scale out"
-  default     = 1
-}
-
-variable "scale_in_adjustment" {
-  description = "The number of instances by which to scale out"
-  default     = -1
+variable "scale_out_thresholds" {
+  description = "The values against which the specified statistic is compared"
+  type        = "map"
+  default     = {
+    # Supporting thresholds as berow
+    #cpu_util          = // e.g. 75
+    #cpu_reservation   = // e.g. 75
+    #memory_util       = // e.g. 75
+    #memory_reservaion = // e.g. 75
+  }
 }
 
 variable "scale_out_ok_actions" {
@@ -180,6 +158,40 @@ variable "scale_out_more_alarm_actions" {
   description = "For scale-out as same as alarm actions for cloudwatch alarms"
   type        = "list"
   default     = []
+}
+
+variable "scale_out_evaluation_periods" {
+  description = "The number of evaluation periods to scale out"
+  default     = 1
+}
+
+variable "scale_out_adjustment" {
+  description = "The number of instances by which to scale out"
+  default     = 1
+}
+
+# AutoScaling > scale-in
+
+variable "scale_in_thresholds" {
+  description = "The values against which the specified statistic is compared for scale_in"
+  type        = "map"
+  default     = {
+    # Supporting thresholds as berow
+    #cpu_util           = // e.g.  5
+    #cpu_reservation    = // e.g.  5
+    #memory_util        = // e.g. 40
+    #memory_reservation = // e.g. 40
+  }
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The number of evaluation periods to scale in"
+  default     = 2
+}
+
+variable "scale_in_adjustment" {
+  description = "The number of instances by which to scale out"
+  default     = -1
 }
 
 variable "scale_in_ok_actions" {
