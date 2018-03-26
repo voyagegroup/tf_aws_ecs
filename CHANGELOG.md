@@ -1,4 +1,4 @@
-## 0.3.0 (Unreleased)
+## 0.3.0 (May 26 2018)
 
 **BC BREAKS:** cluster & service_load_balancing module: variable `autoscale_thresholds` splits
 to `scale_out_thresholds` / `scale_in_thresholds`
