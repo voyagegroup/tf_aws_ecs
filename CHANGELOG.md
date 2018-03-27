@@ -1,3 +1,9 @@
+## 0.3.1 (May 27 2018)
+
+* service_load_balancing: more output(s)
+  * `log_group_name` as aws_cloudwatch_log_group.app.name if enabled autoscaling
+  * `log_group_arn`  as aws_cloudwatch_log_group.app.arn  if enabled autoscaling
+
 ## 0.3.0 (May 26 2018)
 
 **BC BREAKS:** cluster & service_load_balancing module: variable `autoscale_thresholds` splits
