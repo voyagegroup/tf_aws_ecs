@@ -1,3 +1,9 @@
+## 0.3.2 (Apr 18 2018)
+
+* align comparision_operator values
+  * xxx_high: `LessThanOrEqualToThreshold` (no changes)
+  * xxx_low:  `LessThanThreshold` => `LessThanOrEqualToThreshold`
+
 ## 0.3.1 (May 27 2018)
 
 * service_load_balancing: more output(s)
