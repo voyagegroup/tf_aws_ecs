@@ -78,7 +78,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-util-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "MemoryUtilization"
   namespace           = "AWS/ECS"
@@ -130,7 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-util-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
@@ -182,7 +182,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-reservation-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
@@ -234,7 +234,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-reservation-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "CPUReservation"
   namespace           = "AWS/ECS"

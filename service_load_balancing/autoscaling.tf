@@ -92,7 +92,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_low" {
 
   alarm_name          = "${aws_ecs_service.main.name}-ECSService-MemoryUtilization-Low"
   alarm_description   = "scale-in pushed by memory-utilization-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "MemoryUtilization"
   namespace           = "AWS/ECS"
@@ -146,7 +146,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_low" {
 
   alarm_name          = "${aws_ecs_service.main.name}-ECSService-CPUUtilization-Low"
   alarm_description   = "${aws_ecs_service.main.name} scale-in pushed by cpu-utilization-low"
-  comparison_operator = "LessThanThreshold"
+  comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "${var.scale_in_evaluation_periods}"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
