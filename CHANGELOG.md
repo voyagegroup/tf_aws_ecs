@@ -1,3 +1,8 @@
+## Unreleased
+
+* cluster: support tags at aws_cloudwatch_log_group `log_groups_tags`
+* service_load_balancing: support tags at aws_cloudwatch_log_group `log_groups_tags`
+
 ## 0.3.2 (Apr 18 2018)
 
 * align comparision_operator values

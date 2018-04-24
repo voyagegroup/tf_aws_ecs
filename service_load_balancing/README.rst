@@ -83,6 +83,9 @@ Basic Usage
 
      log_group                    = "ex-app-api/container" // same as "awslogs-group" at container_definition
      log_groups_expiration_days   = 30
+     log_groups_tags              = {
+       Application = "ex-app-api"
+     }
    }
 
 

@@ -72,6 +72,9 @@ Basic Usage
 
      log_group                    = "ex-app-cluster/ecs-agent"
      log_groups_expiration_days   = 14
+     log_groups_tags              = {
+       Application = "example"
+     }
    }
 
 

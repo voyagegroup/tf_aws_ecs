@@ -130,6 +130,12 @@ variable "log_groups_expiration_days" {
   default     = 30
 }
 
+variable "log_groups_tags" {
+  description = "The tags of cloudwatch log group"
+  type        = "map"
+  default     = {}
+}
+
 # AutoScaling
 
 variable "autoscale_iam_role_arn" {

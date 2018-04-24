@@ -217,3 +217,9 @@ variable "log_groups_expiration_days" {
   description = "Specifies the number of days you want to retain log events"
   default     = 30
 }
+
+variable "log_groups_tags" {
+  description = "The tags of cloudwatch log group"
+  type        = "map"
+  default     = {}
+}
