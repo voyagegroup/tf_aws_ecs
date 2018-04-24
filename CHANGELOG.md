@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.3.3 (Apr 24 2018)
+
 * cluster: support tags at aws_cloudwatch_log_group `log_groups_tags`
 * service_load_balancing: support tags at aws_cloudwatch_log_group `log_groups_tags`
 
