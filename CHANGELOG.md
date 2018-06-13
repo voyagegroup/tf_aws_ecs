@@ -1,5 +1,42 @@
 ## Unreleased
 
+## 0.4.0 (Jun 13 2018)
+
+BUG FIXES:
+
+* cluster: fix creating only one autoscaling policy when specified multiple thresholds #14
+* service_load_balancing: fix creating only one autoscaling policy when specified multiple thresholds #14
+
+**BC BREAKS:**
+
+Into this module, like rename resource via above changes
+
+(If you do not care about the resource name of this module, or it is not BC BREAKS)
+
+cluster:
+
+- split resource: (removed module.xxx.aws_autoscaling_policy.scale_in)
+  - module.xxx.aws_autoscaling_policy.cpu_reservation_low
+  - module.xxx.aws_autoscaling_policy.cpu_util_low
+  - module.xxx.aws_autoscaling_policy.memory_reservation_low
+  - module.xxx.aws_autoscaling_policy.memory_util_low
+
+- split resource: (removed module.xxx.aws_autoscaling_policy.scale_out)
+  - module.xxx.aws_autoscaling_policy.cpu_reservation_high
+  - module.xxx.aws_autoscaling_policy.cpu_util_high
+  - module.xxx.aws_autoscaling_policy.memory_reservation_high
+  - module.xxx.aws_autoscaling_policy.memory_util_high
+
+service_load_balancing:
+
+- split resource: (removed module.xxx.aws_appautoscaling_policy.scale_in)
+  - module.xxx.aws_appautoscaling_policy.cpu_low
+  - module.xxx.aws_appautoscaling_policy.memory_low
+
+- spolit resource: (removed module.xxx.aws_appautoscaling_policy.scale_out)
+  - module.xxx.aws_appautoscaling_policy.cpu_high
+  - module.xxx.aws_appautoscaling_policy.memory_high
+
 ## 0.3.3 (Apr 24 2018)
 
 * cluster: support tags at aws_cloudwatch_log_group `log_groups_tags`
