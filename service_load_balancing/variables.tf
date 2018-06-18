@@ -10,25 +10,6 @@ variable "cluster_name" {
   description = "Name of ECS Cluster using for autoscaling"
 }
 
-variable "iam_assume_role_policy" {
-  description = "AWS ECS Service Assume Role Policy at IAM Role"
-  default     = <<EOT
-{
-  "Version": "2008-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOT
-}
-
 variable "iam_path" {
   description = "The Path of IAM Role(s)"
   default     = "/"

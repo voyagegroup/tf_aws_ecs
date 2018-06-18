@@ -41,7 +41,21 @@ resource "aws_iam_role" "ecs_service" {
   name                  = "${var.name}-ecs-service-role"
   path                  = "${var.iam_path}"
   force_detach_policies = true
-  assume_role_policy    = "${var.iam_assume_role_policy}"
+  assume_role_policy    = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_iam_role_policy" "ecs_service" {
