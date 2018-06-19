@@ -2,32 +2,46 @@ variable "name" {
   description = "Name of ECS Service"
 }
 
-variable "cluster_id" {
-  description = "ID (ARN) of ECS Cluster"
-}
-
 variable "cluster_name" {
   description = "Name of ECS Cluster using for autoscaling"
 }
 
-variable "iam_assume_role_policy" {
-  description = "AWS ECS Service Assume Role Policy at IAM Role"
-  default     = <<EOT
-{
-  "Version": "2008-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
+variable "launch_type" {
+  description = "The launch type on which to run your service (EC2 / FARGATE)"
+  default     = "EC2"
 }
-EOT
+
+variable "desired_count" {
+  description = "The number of instances of the task definition"
+  default     = 0
 }
+
+variable "deployment_maximum_percent" {
+  description = "The upper limit of the number of running tasks that can be running in a service during a deployment"
+  default     = 200
+}
+
+variable "deployment_minimum_healthy_percent" {
+  description = "The lower limit of the number of running tasks that must remain running and healthy in a service during a deployment"
+  default     = 100
+}
+
+variable "network_mode" {
+  description = "The Docker networking mode to use for the containers in the task"
+  type        = "string"
+  default     = "bridge" // none / bridge / awsvpc / host
+}
+
+# INFO: In the future, we support that U can customize to ignore_changes in life_cycle block.
+#       https://github.com/hashicorp/terraform/issues/3116
+#
+#variable "life_cycle_ignore_changes" {
+#  description = "The list of ignored through changes for resource of ECS Service"
+#  type        = "list"
+#  default     = [
+#    "desired_count",
+#  ]
+#}
 
 variable "iam_path" {
   description = "The Path of IAM Role(s)"
@@ -57,6 +71,28 @@ variable "iam_role_inline_policy" {
 EOT
 }
 
+
+# ECS launch_type: FARGATE
+
+variable "subnet_ids" {
+  description = "AWS vpc zone identifier(s)"
+  type        = "list"
+  default     = []
+}
+
+variable "security_group_ids" {
+  description = "AWS security group id(s) for container instances launch configuration"
+  type        = "list"
+  default     = []
+}
+
+# ECS launch_type: EC2
+
+variable "cluster_id" {
+  description = "ID (ARN) of ECS Cluster if created by external"
+  default     = ""
+}
+
 variable "placement_strategy_type" {
   description = "The type of placement strategy"
   default     = "spread" // or binpack (this module cannot specify "random"
@@ -66,32 +102,6 @@ variable "placement_strategy_field" {
   description = "The field of placement strategy valid values that U select type"
   default     = "instanceId"
 }
-
-variable "desired_count" {
-  description = "The number of instances of the task definition"
-  default     = 0
-}
-
-variable "deployment_maximum_percent" {
-  description = "The upper limit of the number of running tasks that can be running in a service during a deployment"
-  default     = 200
-}
-
-variable "deployment_minimum_healthy_percent" {
-  description = "The lower limit of the number of running tasks that must remain running and healthy in a service during a deployment"
-  default     = 100
-}
-
-# INFO: In the future, we support that U can customize to ignore_changes in life_cycle block.
-#       https://github.com/hashicorp/terraform/issues/3116
-#
-#variable "life_cycle_ignore_changes" {
-#  description = "The list of ignored through changes for resource of ECS Service"
-#  type        = "list"
-#  default     = [
-#    "desired_count",
-#  ]
-#}
 
 # Application Load Balancer
 

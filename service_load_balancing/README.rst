@@ -5,8 +5,9 @@ aws ecs/service_load_balancing terraform module
 A terraform module to provides ecs service balanced on application load balancer
 
 * ECS Service
+   * Support launch_type: "EC2" / "FARGATE"
    * with ECS Task
-   * with CloudWatch Log Group
+   * with CloudWatch Log Group(s)
    * with IAM Role & attached IAM Policy
 * *[Optional] Service Autoscaling*
 
@@ -28,6 +29,8 @@ Basic Usage
 
 .. code:: hcl
 
+   # Pre-require your resources declaration (as may be necessary)
+
    provider "aws" {
      # https://github.com/terraform-providers/terraform-provider-aws/releases
      version = "~> 1.0"
@@ -39,20 +42,40 @@ Basic Usage
      version = "~> 1.0"
    }
 
-   # Pre-require your resources declaration (as may be necessary)
    # The following related sources is out of scope on this module
    #resource "aws_alb"              "xxx" {}
    #resource "aws_alb_lister"       "xxx" {}
-   #resource "aws_alb_target_group" "xxx" {}
+   #resource "aws_alb_target_group" "xxx" {
+   #  target_type = "ip" // "ip" for farget, "instance" for the default
+   #}
+
+   # for launch_type: "FARGATE"
+   #resource "aws_subnet"           "xxx" {}
+   #resource "aws_security_group"   "xxx" {}
+
 
    module "ecs_service" {
      source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
      name                         = "ex-app-api-service"
-     cluster_id                   = "${aws_ecs_cluster.ex_app.id}"
+     log_groups                   = "ex-app-api/container" // same as "awslogs-group" at container_definition
+     log_groups_expiration_days   = 30
+     log_groups_tags              = {
+       Application = "ex-app-api"
+     }
+
+     # 1. Selected launch_type: "FARGATE" (cluster auto creating)
      cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
+     launch_type                  = "FARGATE"
+     network_mode                 = "awsvpc"
+     subnet_ids                   = ["${aws_subnet.xxx.id}", "${aws_subnet.yyy.id}"]
+     security_group_ids           = ["${aws_security_group.xxx.id}"]
+     # 2. Selected launch_type: "EC2" (cluster needs created by external)
+     #cluster_id                  = "${aws_ecs_cluster.ex_app.id}"
+     #cluster_name                = "${aws_ecs_cluster.ex_app.cluster_name}"
+     #launch_type                 = "EC2"
+
      target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
      #desired_count               = 4
-
      container_name               = "ex-app-api" // same as "name"          into container_definition
      container_port               = "80"         // same as "containerPort" into container_definition
      container_family             = "ex-app-api"
@@ -80,12 +103,6 @@ Basic Usage
      }
    ]
    TASK_DEFINITION
-
-     log_group                    = "ex-app-api/container" // same as "awslogs-group" at container_definition
-     log_groups_expiration_days   = 30
-     log_groups_tags              = {
-       Application = "ex-app-api"
-     }
    }
 
 
@@ -159,6 +176,8 @@ See more details about `Service Auto Scaling`_ in the official AWS docs.
 On ecs-cluster created with our terraform module
 ------------------------------------------------
 
+Maybe only use launch_type as "EC2"
+
 .. code:: hcl
 
    module "ecs_cluster" {
@@ -209,7 +228,7 @@ Case: Multiple application load balancers
      # ...
    }
 
-   module "api_ecs_service" {
+   module "api_internal_ecs_service" {
      source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
      name                         = "api_internal"
      cluser_id                    = "${module.ecs_cluster.cluster_id}"
