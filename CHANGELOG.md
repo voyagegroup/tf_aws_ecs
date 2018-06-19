@@ -1,5 +1,19 @@
 ## Unreleased
 
+## 0.5.0 (Jun 18 2018)
+
+NEW FEATURES:
+
+* service_load_balancing: support aws fargate #15
+  * case of specifying var.launch_type = "FARGATE" (currently ver, default as "EC2")
+
+**BC BREAKS:**
+
+* service_load_balancing: migrate from `placement_strategy` to `ordered_placement_strategy` #16
+  * it has force renew if apply to existing aws_ecs_service
+  * if you want update wiwthout destroy, prepare edit to .tfstate
+    * `s/placement_strategy/ordered_placement_strategy/g`
+
 ## 0.4.0 (Jun 13 2018)
 
 BUG FIXES:
