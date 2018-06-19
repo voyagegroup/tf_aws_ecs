@@ -165,6 +165,9 @@ Enabled autoscaling
    }
 
    data "aws_iam_role" "ecs_autoscale_service_linked_role" {
+     # Prepare creating a service-linked role (CLI)
+     # $ aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+     # Ref: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html
      name = "AWSServiceRoleForApplicationAutoScaling_ECSService"
    }
 

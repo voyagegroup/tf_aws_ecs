@@ -149,6 +149,9 @@ variable "log_groups_tags" {
 # AutoScaling
 
 variable "autoscale_iam_role_arn" {
+  # Prepare creating a service-linked role (CLI)
+  # $ aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+  # Ref: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html
   description = "Specifies the IAM Role for ecs appautoscaling"
   default     = "" // not creates if empty
 }
