@@ -18,7 +18,7 @@ resource "aws_ecs_service" "main" {
   deployment_maximum_percent         = "${var.deployment_maximum_percent}"
   deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
 
-  placement_strategy {
+  ordered_placement_strategy {
     type  = "${var.placement_strategy_type}"
     field = "${var.placement_strategy_field}"
   }
