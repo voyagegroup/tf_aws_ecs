@@ -44,10 +44,17 @@ resource "aws_launch_configuration" "app" {
   associate_public_ip_address = "${var.associate_public_ip_address}"
   enable_monitoring           = true
 
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = "${var.root_volume_size}"
+    delete_on_termination = true
+  }
+
   # NOTE: Currently no-support to customizing block device(s)
-  #       - OS specified image_id is not always using /dev/xvdcz as docker storage
-  #       - As a workaround, creates the ami that it is customizing to the block device mappings
-  #root_block_device {}
+  #   - OS specified image_id is not always using /dev/xvdcz as docker storage
+  #   - As a workaround, creates the ami that it is customizing to the block device mappings
+  #
+  # DOCS: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-ami-storage-config.html
   #ebs_block_device  { device_name = "/dev/xvdcz" }
 
   lifecycle {

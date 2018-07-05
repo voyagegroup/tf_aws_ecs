@@ -137,3 +137,22 @@ Adding sns-notification for autoscaling-group scales
 See more details about `Getting SNS Notifications When Your Auto Scaling Group Scales`_ in the official AWS docs.
 
 .. _Getting SNS Notifications When Your Auto Scaling Group Scales: http://docs.aws.amazon.com/autoscaling/latest/userguide/ASGettingNotifications.html
+
+
+Guard CannotInspectContainerError attributables to EBS I/O
+----------------------------------------------------------
+
+Specify volume_size of root_block_device if U want perform to size, and iops
+
+.. code:: hcl
+
+   module "ecs_cluster" {
+      # ...
+
+      root_volume_size = 100
+   }
+
+See more details about `Storage Configuration`_ `General Purpose SSD (gp2) Volumes`_ in the official AWS docs.
+
+.. _Storage Configuration: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-ami-storage-config.html
+.. _General Purpose SSD (gp2) Volumes: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_gp2

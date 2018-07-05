@@ -112,6 +112,11 @@ variable "asg_extra_tags" {
   */]
 }
 
+variable "root_volume_size" {
+  description = "The size of the root volume in gigabytes"
+  default     = 8
+}
+
 # AutoScaling
 
 variable "autoscale_notification_ok_topic_arn" {
