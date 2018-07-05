@@ -1,5 +1,16 @@
 ## Unreleased
 
+## 0.6.0 (Jul 5 2018)
+
+NEW FEATURES:
+
+* cluster: support volume_size of root_block_device, variable_name is `root_volume_size`
+
+**BC BREAKS:**
+
+* cluster: default of `root_volume_size` is 8 (gigabytes), specify larger than using ami snapshot
+  * volume_type is static gp2
+
 ## 0.5.0 (Jun 18 2018)
 
 NEW FEATURES:
