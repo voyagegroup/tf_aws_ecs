@@ -32,6 +32,12 @@ variable "network_mode" {
   default     = "bridge" // none / bridge / awsvpc / host
 }
 
+variable "task_definition_volumes" {
+  description = "@todo"
+  type        = "map"
+  default     = []
+}
+
 # INFO: In the future, we support that U can customize to ignore_changes in life_cycle block.
 #       https://github.com/hashicorp/terraform/issues/3116
 #
