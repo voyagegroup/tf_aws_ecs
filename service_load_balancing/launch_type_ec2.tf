@@ -45,6 +45,13 @@ resource "aws_ecs_task_definition" "container" {
   # The following comment-out is no-support yet for BC-BREAK
   #network_mode            = "${var.network_mode}"
   #requires_compatibilities = ["${var.launch_type}"]
+
+  volume {
+    count = "${length(var.task_definition_volumes)}"
+
+    name      = "${element(var.task_definition_volumes, count.index).name}"
+    host_path = "${element(var.task_definition_volumes, count.index).host_path}"
+  }
 }
 
 resource "aws_iam_role" "ecs_service" {
