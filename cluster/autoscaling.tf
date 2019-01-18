@@ -52,10 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
   threshold           = "${var.scale_out_thresholds["memory_util"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.memory_util_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.memory_util_high.arn), var.scale_out_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -86,10 +83,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
   threshold           = "${var.scale_in_thresholds["memory_util"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.memory_util_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.memory_util_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -122,10 +116,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
   threshold           = "${var.scale_out_thresholds["cpu_util"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.cpu_util_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.cpu_util_high.arn), var.scale_out_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -156,10 +147,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
   threshold           = "${var.scale_in_thresholds["cpu_util"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.cpu_util_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.cpu_util_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -197,10 +185,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
   }
 
   ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.memory_reservation_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.memory_reservation_high.arn), var.scale_out_more_alarm_actions))}"]
 }
 
 resource "aws_autoscaling_policy" "memory_reservation_low" {
@@ -227,10 +212,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
   threshold           = "${var.scale_in_thresholds["memory_reservation"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.memory_reservation_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.memory_reservation_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -263,10 +245,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
   threshold           = "${var.scale_out_thresholds["cpu_reservation"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.cpu_reservation_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.cpu_reservation_high.arn), var.scale_out_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
@@ -297,10 +276,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
   threshold           = "${var.scale_in_thresholds["cpu_reservation"]}"
   treat_missing_data  = "notBreaching"
   ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_autoscaling_policy.cpu_reservation_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
+  alarm_actions       = ["${compact(concat(list(aws_autoscaling_policy.cpu_reservation_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.main.name}"
