@@ -5,7 +5,7 @@
  */
 
 resource "aws_appautoscaling_target" "main" {
-  count              = "${ var.autoscale_iam_role_arn != "" ? 1 : 0 }"
+  count = "${ var.autoscale_iam_role_arn != "" ? 1 : 0 }"
 
   max_capacity       = "${var.autoscale_max_capacity}"
   min_capacity       = "${var.autoscale_min_capacity}"
@@ -18,7 +18,7 @@ resource "aws_appautoscaling_target" "main" {
 // Memory Utilization
 
 resource "aws_appautoscaling_policy" "memory_high" {
-  count              = "${ lookup(var.scale_out_thresholds, "memory", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_out_thresholds, "memory", "") != "" ? 1 : 0 }"
 
   name               = "${var.name}-ecs_service-scale_out-memory_utilization"
   resource_id        = "service/${var.cluster_name}/${var.name}"
@@ -36,11 +36,11 @@ resource "aws_appautoscaling_policy" "memory_high" {
     }
   }
 
-  depends_on         = ["aws_appautoscaling_target.main"]
+  depends_on = ["aws_appautoscaling_target.main"]
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_high" {
-  count               = "${ lookup(var.scale_out_thresholds, "memory", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_out_thresholds, "memory", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${var.name}-ECSService-MemoryUtilization-High"
   alarm_description   = "${var.name} scale-out pushed by memory-utilization"
@@ -52,21 +52,17 @@ resource "aws_cloudwatch_metric_alarm" "memory_high" {
   statistic           = "Average"
   threshold           = "${var.scale_out_thresholds["memory"]}"
   treat_missing_data  = "notBreaching"
+  ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
+  alarm_actions       = ["${compact(concat(list(aws_appautoscaling_policy.memory_high.arn), var.scale_out_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${var.cluster_name}"
     ServiceName = "${var.name}"
   }
-
-  ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_appautoscaling_policy.memory_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
 }
 
 resource "aws_appautoscaling_policy" "memory_low" {
-  count              = "${ lookup(var.scale_in_thresholds, "memory", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_in_thresholds, "memory", "") != "" ? 1 : 0 }"
 
   name               = "${var.name}-ecs_service-scale_in-memory_utilization"
   resource_id        = "service/${var.cluster_name}/${var.name}"
@@ -84,11 +80,11 @@ resource "aws_appautoscaling_policy" "memory_low" {
     }
   }
 
-  depends_on         = ["aws_appautoscaling_target.main"]
+  depends_on = ["aws_appautoscaling_target.main"]
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_low" {
-  count               = "${ lookup(var.scale_in_thresholds, "memory", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_in_thresholds, "memory", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${var.name}-ECSService-MemoryUtilization-Low"
   alarm_description   = "${var.name} scale-in pushed by memory-utilization"
@@ -100,23 +96,19 @@ resource "aws_cloudwatch_metric_alarm" "memory_low" {
   statistic           = "Average"
   threshold           = "${var.scale_in_thresholds["memory"]}"
   treat_missing_data  = "notBreaching"
+  ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
+  alarm_actions       = ["${compact(concat(list(aws_appautoscaling_policy.memory_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${var.cluster_name}"
     ServiceName = "${var.name}"
   }
-
-  ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_appautoscaling_policy.memory_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
 }
 
 // CPU Utilization
 
 resource "aws_appautoscaling_policy" "cpu_high" {
-  count              = "${ lookup(var.scale_out_thresholds, "cpu", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_out_thresholds, "cpu", "") != "" ? 1 : 0 }"
 
   name               = "${var.name}-ecs_service-scale_out-cpu_utilization"
   resource_id        = "service/${var.cluster_name}/${var.name}"
@@ -134,11 +126,11 @@ resource "aws_appautoscaling_policy" "cpu_high" {
     }
   }
 
-  depends_on         = ["aws_appautoscaling_target.main"]
+  depends_on = ["aws_appautoscaling_target.main"]
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_high" {
-  count               = "${ lookup(var.scale_out_thresholds, "cpu", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_out_thresholds, "cpu", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${var.name}-ECSService-CPUUtilization-High"
   alarm_description   = "${var.name} scale-out pushed by cpu-utilization"
@@ -150,21 +142,17 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   statistic           = "Average"
   threshold           = "${var.scale_out_thresholds["cpu"]}"
   treat_missing_data  = "notBreaching"
+  ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
+  alarm_actions       = ["${compact(concat(list(aws_appautoscaling_policy.cpu_high.arn), var.scale_out_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${var.cluster_name}"
     ServiceName = "${var.name}"
   }
-
-  ok_actions          = ["${compact(var.scale_out_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_appautoscaling_policy.cpu_high.arn}",
-    "${compact(var.scale_out_more_alarm_actions)}",
-  ]
 }
 
 resource "aws_appautoscaling_policy" "cpu_low" {
-  count              = "${ lookup(var.scale_in_thresholds, "cpu", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_in_thresholds, "cpu", "") != "" ? 1 : 0 }"
 
   name               = "${var.name}-ecs_service-scale_in-cpu_utilization"
   resource_id        = "service/${var.cluster_name}/${var.name}"
@@ -182,11 +170,11 @@ resource "aws_appautoscaling_policy" "cpu_low" {
     }
   }
 
-  depends_on         = ["aws_appautoscaling_target.main"]
+  depends_on = ["aws_appautoscaling_target.main"]
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_low" {
-  count               = "${ lookup(var.scale_in_thresholds, "cpu", "") != "" ? 1 : 0 }"
+  count = "${ lookup(var.scale_in_thresholds, "cpu", "") != "" ? 1 : 0 }"
 
   alarm_name          = "${var.name}-ECSService-CPUUtilization-Low"
   alarm_description   = "${var.name} scale-in pushed by cpu-utilization"
@@ -198,15 +186,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu_low" {
   statistic           = "Average"
   threshold           = "${var.scale_in_thresholds["cpu"]}"
   treat_missing_data  = "notBreaching"
+  ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
+  alarm_actions       = ["${compact(concat(list(aws_appautoscaling_policy.cpu_low.arn), var.scale_in_more_alarm_actions))}"]
 
   dimensions {
     ClusterName = "${var.cluster_name}"
     ServiceName = "${var.name}"
   }
-
-  ok_actions          = ["${compact(var.scale_in_ok_actions)}"]
-  alarm_actions       = [
-    "${aws_appautoscaling_policy.cpu_low.arn}",
-    "${compact(var.scale_in_more_alarm_actions)}",
-  ]
 }

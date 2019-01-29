@@ -1,6 +1,6 @@
 provider "aws" {
   # https://github.com/terraform-providers/terraform-provider-aws/releases
-  version = "~> 1.23"
+  version = "~> 1.50"
   region  = "ap-northeast-1"
 }
 
