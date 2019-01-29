@@ -1,5 +1,10 @@
 ## Unreleased
 
+## 0.6.1 (Jun 29 2019)
+
+* cluster: support aws providers version ~> 1.50 ([#19](https://github.com/voyagegroup/tf_aws_ecs/pull/19))
+* service_load_balancing: support aws providers version ~> 1.50 ([#19](https://github.com/voyagegroup/tf_aws_ecs/pull/19))
+
 ## 0.6.0 (Jul 5 2018)
 
 NEW FEATURES:
