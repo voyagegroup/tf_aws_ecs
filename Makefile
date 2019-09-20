@@ -2,7 +2,7 @@ OS_TYPE  = $(shell echo $(shell uname) | tr A-Z a-z)
 OS_ARCH := amd64
 
 TERRAFORM         := ./terraform
-TERRAFORM_VERSION := 0.11.7
+TERRAFORM_VERSION := 0.12.9
 TERRAFORM_URL      = https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS_TYPE)_$(OS_ARCH).zip
 
 EXCLUDES_DIRS := _test _example .terraform

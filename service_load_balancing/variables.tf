@@ -28,7 +28,7 @@ variable "deployment_minimum_healthy_percent" {
 
 variable "network_mode" {
   description = "The Docker networking mode to use for the containers in the task"
-  type        = "string"
+  type        = string
   default     = "bridge" // none / bridge / awsvpc / host
 }
 
@@ -69,20 +69,20 @@ variable "iam_role_inline_policy" {
   ]
 }
 EOT
-}
 
+}
 
 # ECS launch_type: FARGATE
 
 variable "subnet_ids" {
   description = "AWS vpc zone identifier(s)"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "security_group_ids" {
   description = "AWS security group id(s) for container instances launch configuration"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -121,17 +121,17 @@ variable "container_port" {
 
 variable "container_family" {
   description = "AWS containers family name"
-  type        = "string"
+  type        = string
 }
 
 variable "container_definitions" {
   description = "AWS ECS Task definitions"
-  type        = "string"
+  type        = string
 }
 
 variable "log_groups" {
   description = "The List of CloudWatch Log Group Name for ECS Task (Container)"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -142,7 +142,7 @@ variable "log_groups_expiration_days" {
 
 variable "log_groups_tags" {
   description = "The tags of cloudwatch log group"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
@@ -175,18 +175,18 @@ variable "autoscale_cooldown" {
 
 variable "scale_out_thresholds" {
   description = "The values against which the specified statistic is compared for scale_out"
-  type        = "map"
+  type        = map(string)
+
   # No apply if empty
-  default     = {
-    # Supporting thresholds as berow
-    #cpu    = // e.g. 75
-    #memory = // e.g. 75
-  }
+  default = {}
+  # Supporting thresholds as berow
+  #cpu    = // e.g. 75
+  #memory = // e.g. 75
 }
 
 variable "scale_out_step_adjustment" {
   description = "The attributes of step scaling policy"
-  type        = "map"
+  type        = map(string)
   default     = {
     metric_interval_lower_bound = 0
     scaling_adjustment          = 1
@@ -200,13 +200,13 @@ variable "scale_out_evaluation_periods" {
 
 variable "scale_out_ok_actions" {
   description = "For scale-out as same as ok actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "scale_out_more_alarm_actions" {
   description = "For scale-out as same as alarm actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -214,13 +214,13 @@ variable "scale_out_more_alarm_actions" {
 
 variable "scale_in_ok_actions" {
   description = "For scale-in as same as ok actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "scale_in_more_alarm_actions" {
   description = "For scale-in as same as alarm actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -231,18 +231,18 @@ variable "scale_in_evaluation_periods" {
 
 variable "scale_in_thresholds" {
   description = "The values against which the specified statistic is compared for scale_in"
-  type        = "map"
+  type        = map(string)
+
   # No apply if empty
-  default     = {
-    # Supporting thresholds as berow
-    #cpu    = // e.g.  5
-    #memory = // e.g. 40
-  }
+  default = {}
+  # Supporting thresholds as berow
+  #cpu    = // e.g.  5
+  #memory = // e.g. 40
 }
 
 variable "scale_in_step_adjustment" {
   description = "The attributes of step scaling policy"
-  type        = "map"
+  type        = map(string)
   default     = {
     metric_interval_upper_bound = 0
     scaling_adjustment          = -1
