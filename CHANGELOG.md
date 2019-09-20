@@ -1,5 +1,12 @@
 ## Unreleased
 
+## 0.7.0 (Sep 20 2019)
+
+**BC BREAKS:**
+
+* cluster: only support terraform version >= 0.12 ([#20](https://github.com/voyagegroup/tf_aws_ecs/pull/20))
+* service_load_balancing: only support terraform version >= 0.12 ([#20](https://github.com/voyagegroup/tf_aws_ecs/pull/20))
+
 ## 0.6.1 (Jun 29 2019)
 
 * cluster: support aws providers version ~> 1.50 ([#19](https://github.com/voyagegroup/tf_aws_ecs/pull/19))
