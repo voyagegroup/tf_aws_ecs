@@ -11,9 +11,8 @@ variable "iam_path" {
 
 variable "iam_policy_arns" {
   description = "IAM policy arns for container instance"
-  type        = "list"
-  default     = [
-    # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html
+  type        = list(string)
+  default = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
   ]
 }
@@ -25,22 +24,22 @@ variable "associate_public_ip_address" {
 
 variable "key_name" {
   description = "Name of AWS key pair"
-  type        = "string"
+  type        = string
 }
 
 variable "ami_id" {
   description = "AWS machine image id"
-  type        = "string"
+  type        = string
 }
 
 variable "vpc_zone_identifier" {
   description = "AWS vpc zone identifier(s)"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "security_groups" {
   description = "AWS security group id(s) for container instances launch configuration"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "instance_type" {
@@ -55,7 +54,7 @@ variable "ebs_optimized" {
 
 variable "user_data" {
   description = "AWS user_data of containers instances"
-  type        = "string"
+  type        = string
 }
 
 variable "asg_min_size" {
@@ -75,11 +74,12 @@ variable "asg_default_cooldown" {
 
 variable "asg_enabled_metrics" {
   description = "A list of metrics to collect in AutoScaling Group"
-  type        = "list"
-  default     = [
-    # http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-monitoring.html#as-enable-group-metrics
-    # Candidates is bellow as:
-    /*
+  type        = list(string)
+  default = [
+  ]
+  # http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-monitoring.html#as-enable-group-metrics
+  # Candidates is bellow as:
+  /*
     "GroupMinSize",
     "GroupMaxSize",
     "GroupDesiredCapacity",
@@ -89,19 +89,20 @@ variable "asg_enabled_metrics" {
     "GroupTerminatingInstances",
     "GroupTotalInstances",
     */
-  ]
 }
 
 variable "asg_termination_policies" {
   description = "AutoScaling Group termination_policies"
-  type        = "list"
+  type        = list(string)
   default     = ["OldestInstance"]
 }
 
 variable "asg_extra_tags" {
   description = "AWS EC2 Tag for AutoScaling Group (and attached instances)"
-  type        = "list"
-  default     = [/*
+  type        = list
+  default = [
+  ]
+  /*
     # like: https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#interpolated-tags
     {
       key                 = "Name"
@@ -109,7 +110,7 @@ variable "asg_extra_tags" {
       propagate_at_launch = true
     },
     { ...
-  */]
+  */
 }
 
 variable "root_volume_size" {
@@ -143,25 +144,24 @@ variable "autoscale_cooldown" {
 
 variable "scale_out_thresholds" {
   description = "The values against which the specified statistic is compared"
-  type        = "map"
-  default     = {
-    # Supporting thresholds as berow
-    #cpu_util          = // e.g. 75
-    #cpu_reservation   = // e.g. 75
-    #memory_util       = // e.g. 75
-    #memory_reservaion = // e.g. 75
-  }
+  type        = map(string)
+  default     = {}
+  # Supporting thresholds as berow
+  #cpu_util          = // e.g. 75
+  #cpu_reservation   = // e.g. 75
+  #memory_util       = // e.g. 75
+  #memory_reservaion = // e.g. 75
 }
 
 variable "scale_out_ok_actions" {
   description = "For scale-out as same as ok actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "scale_out_more_alarm_actions" {
   description = "For scale-out as same as alarm actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -179,14 +179,13 @@ variable "scale_out_adjustment" {
 
 variable "scale_in_thresholds" {
   description = "The values against which the specified statistic is compared for scale_in"
-  type        = "map"
-  default     = {
-    # Supporting thresholds as berow
-    #cpu_util           = // e.g.  5
-    #cpu_reservation    = // e.g.  5
-    #memory_util        = // e.g. 40
-    #memory_reservation = // e.g. 40
-  }
+  type        = map(string)
+  default     = {}
+  # Supporting thresholds as berow
+  #cpu_util           = // e.g.  5
+  #cpu_reservation    = // e.g.  5
+  #memory_util        = // e.g. 40
+  #memory_reservation = // e.g. 40
 }
 
 variable "scale_in_evaluation_periods" {
@@ -201,13 +200,13 @@ variable "scale_in_adjustment" {
 
 variable "scale_in_ok_actions" {
   description = "For scale-in as same as ok actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "scale_in_more_alarm_actions" {
   description = "For scale-in as same as alarm actions for cloudwatch alarms"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -215,7 +214,7 @@ variable "scale_in_more_alarm_actions" {
 
 variable "log_group" {
   description = "The name of cloudwatch log group"
-  type        = "string"
+  type        = string
 }
 
 variable "log_groups_expiration_days" {
@@ -225,6 +224,6 @@ variable "log_groups_expiration_days" {
 
 variable "log_groups_tags" {
   description = "The tags of cloudwatch log group"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }

@@ -1,9 +1,9 @@
 resource "aws_iam_role" "ecs_instance" {
   name                  = "${aws_ecs_cluster.main.name}-ecs-instance-role"
-  path                  = "${var.iam_path}"
+  path                  = var.iam_path
   force_detach_policies = true
 
-  assume_role_policy    = <<EOF
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -18,21 +18,22 @@ resource "aws_iam_role" "ecs_instance" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_policy" {
-  count      = "${length(var.iam_policy_arns)}"
+  count = length(var.iam_policy_arns)
 
-  role       = "${aws_iam_role.ecs_instance.name}"
-  policy_arn = "${element(var.iam_policy_arns, count.index)}"
+  role       = aws_iam_role.ecs_instance.name
+  policy_arn = var.iam_policy_arns[count.index]
 
-  depends_on = ["aws_iam_role.ecs_instance"]
+  depends_on = [aws_iam_role.ecs_instance]
 }
 
 resource "aws_iam_instance_profile" "ecs_instance" {
-  name       = "${aws_ecs_cluster.main.name}-ecs-instance-profile"
-  role       = "${aws_iam_role.ecs_instance.name}"
-  path       = "${var.iam_path}"
+  name = "${aws_ecs_cluster.main.name}-ecs-instance-profile"
+  role = aws_iam_role.ecs_instance.name
+  path = var.iam_path
 
-  depends_on = ["aws_iam_role.ecs_instance"]
+  depends_on = [aws_iam_role.ecs_instance]
 }
