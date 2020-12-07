@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 0.7.1 (Dec 07 2020)
+
+* service_load_balancing: fix error case var.log_group by the default ([#22](https://github.com/voyagegroup/tf_aws_ecs/pull/22))
+
 ## 0.7.0 (Sep 20 2019)
 
 **BC BREAKS:**
