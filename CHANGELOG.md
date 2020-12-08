@@ -1,5 +1,11 @@
 ## Unreleased
 
+## 0.8.0 (Dec 08 2020)
+
+* supported terraform version >= 13
+* service_load_balancing: optional variable `task_role_arn` for external resource ([#23](https://github.com/voyagegroup/tf_aws_ecs/pull/23))
+
+
 ## 0.7.1 (Dec 07 2020)
 
 * service_load_balancing: fix error case var.log_group by the default ([#22](https://github.com/voyagegroup/tf_aws_ecs/pull/22))
