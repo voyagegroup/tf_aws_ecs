@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "fargate" {
   container_definitions    = var.container_definitions
   network_mode             = var.network_mode
   requires_compatibilities = [var.launch_type]
-  task_role_arn            = var.task_role_arn ? var.task_role_arn : aws_iam_role.fargate[0].arn
+  task_role_arn            = var.task_role_arn == "" ? aws_iam_role.fargate[0].arn : var.task_role_arn
 }
 
 resource "aws_iam_role" "fargate" {

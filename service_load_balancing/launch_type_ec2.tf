@@ -7,7 +7,7 @@ resource "aws_ecs_service" "main" {
   cluster         = var.cluster_id
   launch_type     = var.launch_type
   task_definition = aws_ecs_task_definition.container[0].arn
-  iam_role        = var.task_role_arn ? var.task_role_arn : aws_iam_role.ecs_service[0].arn
+  iam_role        = var.task_role_arn == "" ? aws_iam_role.ecs_service[0].arn : var.task_role_arn
 
   # As below is can be running in a service during a deployment
   desired_count                      = var.desired_count
