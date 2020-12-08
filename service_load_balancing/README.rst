@@ -6,9 +6,9 @@ A terraform module to provides ecs service balanced on application load balancer
 
 * ECS Service
    * Support launch_type: "EC2" / "FARGATE"
-   * with ECS Task
-   * with CloudWatch Log Group(s)
-   * with IAM Role & attached IAM Policy
+   * With ECS Task
+* *[Optional] With CloudWatch Log Group(s)*
+* *[Optional] With IAM Role & attached IAM Policy*
 * *[Optional] Service Autoscaling*
 
 See more details about `Service Load Balancing`_ in the official AWS docs.
@@ -29,57 +29,44 @@ Basic Usage
 
 .. code:: hcl
 
-   # Pre-require your resources declaration (as may be necessary)
-
-   provider "aws" {
-     # https://github.com/terraform-providers/terraform-provider-aws/releases
-     version = "~> 1.0"
-     region  = "${var.region}"
-   }
-
-   provider "template" {
-     # https://github.com/terraform-providers/terraform-provider-template/releases
-     version = "~> 1.0"
-   }
-
    # The following related sources is out of scope on this module
-   #resource "aws_alb"              "xxx" {}
-   #resource "aws_alb_lister"       "xxx" {}
-   #resource "aws_alb_target_group" "xxx" {
-   #  target_type = "ip" // "ip" for farget, "instance" for the default
+   #resource "aws_lb"              "xxx" {}
+   #resource "aws_lb_lister"       "xxx" {}
+   #resource "aws_lb_target_group" "xxx" {
+   #  # "ip" for fargate, "instance" by the default
+   #  target_type = "ip"
    #}
 
-   # for launch_type: "FARGATE"
+   # For launch_type: "FARGATE"
    #resource "aws_subnet"           "xxx" {}
    #resource "aws_security_group"   "xxx" {}
 
 
    module "ecs_service" {
-     source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
-     name                         = "ex-app-api-service"
-     log_groups                   = "ex-app-api/container" // same as "awslogs-group" at container_definition
-     log_groups_expiration_days   = 30
-     log_groups_tags              = {
-       Application = "ex-app-api"
-     }
+     source = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
+
+     name         = "ex-app-api-service"
+     cluster_name = "${aws_ecs_cluster.ex_app.name}"
+     launch_type  = "FARGATE"
 
      # 1. Selected launch_type: "FARGATE" (cluster auto creating)
-     cluster_name                 = "${aws_ecs_cluster.ex_app.name}"
-     launch_type                  = "FARGATE"
-     network_mode                 = "awsvpc"
-     subnet_ids                   = ["${aws_subnet.xxx.id}", "${aws_subnet.yyy.id}"]
-     security_group_ids           = ["${aws_security_group.xxx.id}"]
+     network_mode       = "awsvpc"
+     subnet_ids         = ["${aws_subnet.xxx.id}", "${aws_subnet.yyy.id}"]
+     security_group_ids = ["${aws_security_group.xxx.id}"]
      # 2. Selected launch_type: "EC2" (cluster needs created by external)
-     #cluster_id                  = "${aws_ecs_cluster.ex_app.id}"
-     #cluster_name                = "${aws_ecs_cluster.ex_app.cluster_name}"
-     #launch_type                 = "EC2"
+     #cluster_id        = "${aws_ecs_cluster.ex_app.id}"
+     #cluster_name      = "${aws_ecs_cluster.ex_app.cluster_name}"
+     #launch_type       = "EC2"
 
-     target_group_arn             = "${aws_alb_target_group.ex_app_api.arn}"
-     #desired_count               = 4
-     container_name               = "ex-app-api" // same as "name"          into container_definition
-     container_port               = "80"         // same as "containerPort" into container_definition
-     container_family             = "ex-app-api"
-     container_definitions        = <<TASK_DEFINITION
+     # [Optional] external iam role if you want specified
+     task_role_arn = "${aws_iam_role.xxx.arn}"
+
+     target_group_arn      = "${aws_lb_target_group.ex_app_api.arn}"
+     #desired_count        = 4
+     container_name        = "ex-app-api" # same as "name"          into container_definition
+     container_port        = "80"         # same as "containerPort" into container_definition
+     container_family      = "ex-app-api"
+     container_definitions = <<TASK_DEFINITION
    [
      {
        "name":      "ex-app-api",
@@ -103,6 +90,14 @@ Basic Usage
      }
    ]
    TASK_DEFINITION
+
+     # Optional to log_groups*
+     log_groups                 = ["ex-app-api/container"] # like same as "awslogs-group" at container_definition
+     log_groups_expiration_days = 30
+     log_groups_tags            = {
+       Application = "ex-app-api"
+     }
+
    }
 
 
@@ -115,7 +110,7 @@ cause task_definition is updated often via continuous ecs deployment.
 Although it is a difficult decision, we hope to support dynamic lifecycle
 featured by Terraform.
 
-See detail: [#1](https://github.com/voyagegroup/tf_aws_ecs/issues/1)
+See detail: `#1 <https://github.com/voyagegroup/tf_aws_ecs/issues/1>`_
 
 
 Advanced Usage
@@ -137,13 +132,14 @@ Enabled autoscaling
 
      # ...
 
-     autoscale_iam_role_arn        = "${data.aws_iam_role.ecs_autoscale_service_linked_role.arn}"
-     autoscale_min_capacity        = 2
-     autoscale_max_capacity        = 8
+     autoscale_iam_role_arn = "${data.aws_iam_role.ecs_autoscale_service_linked_role.arn}"
+     autoscale_min_capacity = 2
+     autoscale_max_capacity = 8
 
-     #scale_out_ok_actions         = []
-     scale_out_more_alarm_actions  = ["${aws_sns_topic.ex_alert.arn}"]
-     scale_out_thresholds          = {
+     # Optional to scale_out_*_actions
+     #scale_out_ok_actions        = []
+     scale_out_more_alarm_actions = ["${aws_sns_topic.ex_alert.arn}"]
+     scale_out_thresholds         = {
        cpu    = 80
        memory = 75
      }
@@ -152,9 +148,10 @@ Enabled autoscaling
        scaling_adjustment          = 1
      }
 
-     #scale_in_ok_actions          = []
-     #scale_in_more_alarm_actions  = []
-     scale_in_thresholds           = {
+     # Optional to scale_in_*_actions
+     #scale_in_ok_actions         = []
+     #scale_in_more_alarm_actions = []
+     scale_in_thresholds          = {
        cpu    = 10
        memory = 20
      }
@@ -205,17 +202,17 @@ Case: Multiple application load balancers
 
 .. code:: hcl
 
-   # Creating alb
-   #resource "aws_alb" "api" {}
-   #resource "aws_alb_listner" "api" {}
-   #resource "aws_alb_target_group" "api" {}
+   # Creating lb
+   #resource "ws_lb" "api" {}
+   #resource "ws_lb_listener" "api" {}
+   #resource "ws_lb_target_group" "api" {}
 
-   # Creating alb(-internal)
-   #resource "aws_alb" "api_internal" {
+   # Creating lb(-internal)
+   #resource "aws_lb" "api_internal" {
    #  internal = true
    #}
-   #resource "aws_alb_listner" "api_internal" {}
-   #resource "aws_alb_target_group" "api_internal" {}
+   #resource "aws_lb_listener" "api_internal" {}
+   #resource "aws_lb_target_group" "api_internal" {}
 
    module "ecs_cluster" {
      source = "git@git.hub.com:voyagegroup/tf_aws_ecs//cluster"
@@ -223,20 +220,22 @@ Case: Multiple application load balancers
    }
 
    module "api_ecs_service" {
-     source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
-     name                         = "api"
-     cluser_id                    = "${module.ecs_cluster.cluster_id}"
-     cluster_name                 = "${module.ecs_cluster.cluster_name}"
-     target_group_arn             = "${aws_alb_target_group.api.arn}"
+     source = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
+
+     name             = "api"
+     cluster_id       = "${module.ecs_cluster.cluster_id}"
+     cluster_name     = "${module.ecs_cluster.cluster_name}"
+     target_group_arn = "${aws_lb_target_group.api.arn}"
      # ...
    }
 
    module "api_internal_ecs_service" {
-     source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
-     name                         = "api_internal"
-     cluser_id                    = "${module.ecs_cluster.cluster_id}"
-     cluster_name                 = "${module.ecs_cluster.cluster_name}"
-     target_group_arn             = "${aws_alb_target_group.api_internal.arn}"
+     source = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
+
+     name             = "api_internal"
+     cluster_id       = "${module.ecs_cluster.cluster_id}"
+     cluster_name     = "${module.ecs_cluster.cluster_name}"
+     target_group_arn = "${aws_lb_target_group.api_internal.arn}"
      # ...
    }
 
@@ -246,30 +245,30 @@ Case: Multiple lister rules on application load balancer
 
 .. code:: hcl
 
-   resource "aws_alb" "api" {
+   resource "aws_lb" "api" {
      # ...
    }
 
-   resource "aws_alb_listener" "api" {
+   resource "aws_lb_listener" "api" {
      # ...
 
      "default_action" {
-       target_group_arn = "${aws_alb_target_group.api.arn}"
+       target_group_arn = "${aws_lb_target_group.api.arn}"
        type             = "forward"
      }
    }
 
-   resource "aws_alb_target_group" "api" {
+   resource "aws_lb_target_group" "api" {
      # ...
    }
 
-   resource "aws_alb_listener_rule" "api_canary" {
-     listener_arn = "${aws_alb_listener.api.arn}"
+   resource "aws_lb_listener_rule" "api_canary" {
+     listener_arn = "${aws_lb_listener.api.arn}"
      priority     = 99
 
      action {
        type             = "forward"
-       target_group_arn = "${aws_alb_target_group.api_canary.arn}"
+       target_group_arn = "${aws_lb_target_group.api_canary.arn}"
      }
 
      condition {
@@ -278,7 +277,7 @@ Case: Multiple lister rules on application load balancer
      }
    }
 
-   resource "aws_alb_target_group" "api_canary" {
+   resource "aws_lb_target_group" "api_canary" {
      # ...
    }
 
@@ -288,19 +287,19 @@ Case: Multiple lister rules on application load balancer
    }
 
    module "api_ecs_service" {
-     source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
-     name                         = "api"
-     cluser_id                    = "${module.ecs_cluster.cluster_id}"
-     cluster_name                 = "${module.ecs_cluster.cluster_name}"
-     target_group_arn             = "${aws_alb_target_group.api.arn}"
+     source           = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
+     name             = "api"
+     cluster_id       = "${module.ecs_cluster.cluster_id}"
+     cluster_name     = "${module.ecs_cluster.cluster_name}"
+     target_group_arn = "${aws_lb_target_group.api.arn}"
      # ...
    }
 
    module "api_canary_ecs_service" {
-     source                       = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
-     name                         = "api_canary"
-     cluser_id                    = "${module.ecs_cluster.cluster_id}"
-     cluster_name                 = "${module.ecs_cluster.cluster_name}"
-     target_group_arn             = "${aws_alb_target_group.api_canary.arn}"
+     source           = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
+     name             = "api_canary"
+     cluster_id       = "${module.ecs_cluster.cluster_id}"
+     cluster_name     = "${module.ecs_cluster.cluster_name}"
+     target_group_arn = "${aws_lb_target_group.api_canary.arn}"
      # ...
    }

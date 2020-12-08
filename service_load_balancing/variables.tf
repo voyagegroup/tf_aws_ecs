@@ -43,8 +43,13 @@ variable "network_mode" {
 #  ]
 #}
 
+variable "task_role_arn" {
+  description = "The ARN of IAM Role if you want to use an external"
+  default     = ""
+}
+
 variable "iam_path" {
-  description = "The Path of IAM Role(s)"
+  description = "The Path of IAM Role"
   default     = "/"
 }
 
