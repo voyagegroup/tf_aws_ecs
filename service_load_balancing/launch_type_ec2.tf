@@ -7,12 +7,7 @@ resource "aws_ecs_service" "main" {
   cluster         = var.cluster_id
   launch_type     = var.launch_type
   task_definition = aws_ecs_task_definition.container[0].arn
-  iam_role        = aws_iam_role.ecs_service[0].arn
-
-  # Note: To prevent a race condition during service deletion,
-  #       make sure to set depends_on to the related aws_iam_role_policy;
-  #       otherwise, the policy may be destroyed too soon and the ECS service will then get stuck in the DRAINING state.
-  depends_on = [aws_iam_role_policy.ecs_service]
+  iam_role        = var.task_role_arn ? var.task_role_arn : aws_iam_role.ecs_service[0].arn
 
   # As below is can be running in a service during a deployment
   desired_count                      = var.desired_count
@@ -51,7 +46,7 @@ resource "aws_ecs_task_definition" "container" {
 }
 
 resource "aws_iam_role" "ecs_service" {
-  count = var.launch_type == "EC2" ? 1 : 0
+  count = var.launch_type == "EC2" && var.task_role_arn == "" ? 1 : 0
 
   name                  = "${var.name}-ecs-service-role"
   path                  = var.iam_path
@@ -74,7 +69,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "ecs_service" {
-  count = var.launch_type == "EC2" ? 1 : 0
+  count = var.launch_type == "EC2" && var.task_role_arn == "" ? 1 : 0
 
   name   = "${var.name}-ecs-service-policy"
   role   = aws_iam_role.ecs_service[0].name
