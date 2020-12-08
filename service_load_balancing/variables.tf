@@ -44,7 +44,7 @@ variable "network_mode" {
 #}
 
 variable "task_role_arn" {
-  description = "The ARN of IAM Role ARN if you want to use an external"
+  description = "The ARN of IAM Role if you want to use an external"
   default     = ""
 }
 
