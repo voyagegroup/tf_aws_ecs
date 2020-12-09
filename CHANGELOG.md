@@ -1,5 +1,15 @@
 ## Unreleased
 
+## 0.8.1 (Dec 09 2020)
+
+* optional variable `execution_role_arn`
+
+**BC BREAKS:**
+
+* service_load_balancing: fix `task_role_arn` for external resource ([#25](https://github.com/voyagegroup/tf_aws_ecs/pull/25))
+  * ecs_service iam-role is used service-linked role when new create ecs_service
+  * ecs tasks execution role is used service-linked role by the default
+
 ## 0.8.0 (Dec 08 2020)
 
 * supported terraform version >= 13
