@@ -41,6 +41,11 @@ Basic Usage
    #resource "aws_subnet"           "xxx" {}
    #resource "aws_security_group"   "xxx" {}
 
+   # Using aws service-linked-role
+   # Or $ aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+   resource "aws_iam_service_linked_role" "ecs" {
+     aws_service_name = "ecs.amazonaws.com"
+   }
 
    module "ecs_service" {
      source = "git@github.com:voyagegroup/tf_aws_ecs//service_load_balancing"
@@ -58,8 +63,10 @@ Basic Usage
      #cluster_name      = "${aws_ecs_cluster.ex_app.cluster_name}"
      #launch_type       = "EC2"
 
-     # [Optional] external iam role if you want specified
-     task_role_arn = "${aws_iam_role.xxx.arn}"
+     # [Optional] customize ecs roles
+     task_role_arn      = "${aws_iam_role.xxx.arn}"
+     # Maybe better off using aws service-linked-role (it's default modules behavior)
+     #execution_role_arn = "${aws_iam_role.yyy.arn}"
 
      target_group_arn      = "${aws_lb_target_group.ex_app_api.arn}"
      #desired_count        = 4

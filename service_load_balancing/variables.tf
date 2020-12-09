@@ -43,6 +43,17 @@ variable "network_mode" {
 #  ]
 #}
 
+variable "execution_role_arn" {
+  description = "The ARN of IAM Role if you want to use an external"
+  default     = ""
+}
+
+# If var.execution_role_arn is empty, used this
+data "aws_iam_role" "execution" {
+  count = var.execution_role_arn == "" ? 1 : 0
+  name = "ecsTaskExecutionRole"
+}
+
 variable "task_role_arn" {
   description = "The ARN of IAM Role if you want to use an external"
   default     = ""
