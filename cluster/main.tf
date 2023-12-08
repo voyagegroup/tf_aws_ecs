@@ -23,7 +23,14 @@ resource "aws_autoscaling_group" "app" {
   vpc_zone_identifier = var.vpc_zone_identifier
   default_cooldown    = var.asg_default_cooldown
 
-  tags = var.asg_extra_tags
+  dynamic "tag" {
+    for_each = toset(var.asg_extra_tags)
+    content {
+      key                 = tag.value.key
+      value               = tag.value.value
+      propagate_at_launch = tag.value.propagate_at_launch
+    }
+  }
 
   lifecycle {
     create_before_destroy = true
