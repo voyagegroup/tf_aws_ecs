@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 0.8.2 (Dec 12 2023)
+
+* `tags` argument was deprecated in `aws_autoscaling_group` above terraform-provider-aws version 4.0 ([#26](https://github.com/voyagegroup/tf_aws_ecs/pull/26))
+
 ## 0.8.1 (Dec 09 2020)
 
 * optional variable `execution_role_arn`
