@@ -29,7 +29,7 @@ resource "aws_autoscaling_notification" "ng" {
 // Memory Utilization
 
 resource "aws_autoscaling_policy" "memory_util_high" {
-  count = lookup(var.scale_out_thresholds, "memory_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "memory_util", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_out-memory_util"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -39,7 +39,7 @@ resource "aws_autoscaling_policy" "memory_util_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
-  count = lookup(var.scale_out_thresholds, "memory_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "memory_util", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryUtilization-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by memory-util"
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
 }
 
 resource "aws_autoscaling_policy" "memory_util_low" {
-  count = lookup(var.scale_in_thresholds, "memory_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "memory_util", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_in-memory_util"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -75,7 +75,7 @@ resource "aws_autoscaling_policy" "memory_util_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
-  count = lookup(var.scale_in_thresholds, "memory_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider  && lookup(var.scale_in_thresholds, "memory_util", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-util"
@@ -103,7 +103,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
 // CPU Utilization
 
 resource "aws_autoscaling_policy" "cpu_util_high" {
-  count = lookup(var.scale_out_thresholds, "cpu_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "cpu_util", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_out-cpu_util"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -113,7 +113,7 @@ resource "aws_autoscaling_policy" "cpu_util_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
-  count = lookup(var.scale_out_thresholds, "cpu_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "cpu_util", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-util"
@@ -139,7 +139,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
 }
 
 resource "aws_autoscaling_policy" "cpu_util_low" {
-  count = lookup(var.scale_in_thresholds, "cpu_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "cpu_util", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_in-cpu_util"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -149,7 +149,7 @@ resource "aws_autoscaling_policy" "cpu_util_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
-  count = lookup(var.scale_in_thresholds, "cpu_util", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "cpu_util", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUUtilization-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-util"
@@ -177,7 +177,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
 // Memory Reservation
 
 resource "aws_autoscaling_policy" "memory_reservation_high" {
-  count = lookup(var.scale_out_thresholds, "memory_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "memory_reservation", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_out-memory_reservation"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -187,7 +187,7 @@ resource "aws_autoscaling_policy" "memory_reservation_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
-  count = lookup(var.scale_out_thresholds, "memory_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "memory_reservation", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by memory-reservation"
@@ -214,7 +214,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
 }
 
 resource "aws_autoscaling_policy" "memory_reservation_low" {
-  count = lookup(var.scale_in_thresholds, "memory_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "memory_reservation", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_in-memory_reservation"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -224,7 +224,7 @@ resource "aws_autoscaling_policy" "memory_reservation_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
-  count = lookup(var.scale_in_thresholds, "memory_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "memory_reservation", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-MemoryReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by memory-reservation"
@@ -252,7 +252,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
 // CPU Reservation
 
 resource "aws_autoscaling_policy" "cpu_reservation_high" {
-  count = lookup(var.scale_out_thresholds, "cpu_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "cpu_reservation", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_out-cpu_reservation"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -262,7 +262,7 @@ resource "aws_autoscaling_policy" "cpu_reservation_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
-  count = lookup(var.scale_out_thresholds, "cpu_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_out_thresholds, "cpu_reservation", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-High"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-out pushed by cpu-reservation"
@@ -288,7 +288,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
 }
 
 resource "aws_autoscaling_policy" "cpu_reservation_low" {
-  count = lookup(var.scale_in_thresholds, "cpu_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "cpu_reservation", "") != "" ? 1 : 0
 
   name                   = "${aws_ecs_cluster.main.name}-scale_in-cpu_reservation"
   autoscaling_group_name = aws_autoscaling_group.app.name
@@ -298,7 +298,7 @@ resource "aws_autoscaling_policy" "cpu_reservation_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
-  count = lookup(var.scale_in_thresholds, "cpu_reservation", "") != "" ? 1 : 0
+  count = !var.use_ecs_capacity_provider && lookup(var.scale_in_thresholds, "cpu_reservation", "") != "" ? 1 : 0
 
   alarm_name          = "${aws_ecs_cluster.main.name}-ECSCluster-CPUReservation-Low"
   alarm_description   = "${aws_ecs_cluster.main.name} scale-in pushed by cpu-reservation"

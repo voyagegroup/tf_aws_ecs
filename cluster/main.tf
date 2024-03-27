@@ -39,6 +39,37 @@ resource "aws_autoscaling_group" "app" {
   }
 }
 
+resource "aws_ecs_capacity_provider" "app" {
+  count = var.use_ecs_capacity_provider ? 1 : 0
+
+  name = aws_ecs_cluster.main.name
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.app.arn
+    managed_draining               = var.managed_draining
+    managed_termination_protection = var.managed_termination_protection
+
+    managed_scaling {
+      maximum_scaling_step_size = var.maximum_scaling_step_size
+      minimum_scaling_step_size = var.minimum_scaling_step_size
+      status                    = var.managed_scaling_status
+      target_capacity           = var.target_capacity
+    }
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "app" {
+  count = var.use_ecs_capacity_provider ? 1 : 0
+
+  cluster_name       = aws_ecs_cluster.main.id
+  capacity_providers = [
+    aws_ecs_capacity_provider.app[count.index].name
+  ]
+  default_capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.app[count.index].name
+  }
+}
+
 resource "aws_launch_configuration" "app" {
   name_prefix                 = "${aws_ecs_cluster.main.name}-"
   security_groups             = var.security_groups

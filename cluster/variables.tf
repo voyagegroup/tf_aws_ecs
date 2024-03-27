@@ -12,7 +12,7 @@ variable "iam_path" {
 variable "iam_policy_arns" {
   description = "IAM policy arns for container instance"
   type        = list(string)
-  default = [
+  default     = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
   ]
 }
@@ -75,7 +75,7 @@ variable "asg_default_cooldown" {
 variable "asg_enabled_metrics" {
   description = "A list of metrics to collect in AutoScaling Group"
   type        = list(string)
-  default = [
+  default     = [
   ]
   # http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-monitoring.html#as-enable-group-metrics
   # Candidates is bellow as:
@@ -100,7 +100,7 @@ variable "asg_termination_policies" {
 variable "asg_extra_tags" {
   description = "AWS EC2 Tag for AutoScaling Group (and attached instances)"
   type        = list
-  default = [
+  default     = [
   ]
   /*
     # like: https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#interpolated-tags
@@ -208,6 +208,50 @@ variable "scale_in_more_alarm_actions" {
   description = "For scale-in as same as alarm actions for cloudwatch alarms"
   type        = list(string)
   default     = []
+}
+
+# ECS capacity provider
+
+variable "use_ecs_capacity_provider" {
+  description = "Use ECS capacity provider"
+  type        = bool
+  default     = false
+}
+
+variable "managed_draining" {
+  description = "Enable managed draining"
+  type        = string
+  default     = "ENABLED"
+}
+
+variable "managed_termination_protection" {
+    description = "Enable managed termination protection"
+    type        = string
+    default     = "ENABLED"
+}
+
+variable "managed_scaling_status" {
+  description = "The managed scaling status of the ECS capacity provider"
+  type        = string
+  default     = "ENABLED"
+}
+
+variable "maximum_scaling_step_size" {
+  description = "The maximum number of instances that can be added or removed from the Auto Scaling group in a single scaling action"
+  type        = number
+  default     = 1
+}
+
+variable "minimum_scaling_step_size" {
+  description = "The minimum number of instances that can be added or removed from the Auto Scaling group in a single scaling action"
+  type        = number
+  default     = 1
+}
+
+variable "target_capacity" {
+  description = "The target capacity of the ECS capacity provider"
+  type        = number
+  default     = 1
 }
 
 # Cloudwatch Log Group
