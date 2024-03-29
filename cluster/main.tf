@@ -12,8 +12,9 @@ resource "aws_autoscaling_group" "app" {
   name            = aws_ecs_cluster.main.name
   enabled_metrics = var.asg_enabled_metrics
 
-  launch_configuration = aws_launch_configuration.app.name
-  termination_policies = var.asg_termination_policies
+  launch_configuration  = aws_launch_configuration.app.name
+  protect_from_scale_in = var.asg_protect_from_scale_in
+  termination_policies  = var.asg_termination_policies
 
   # NOTE: this module no handled desired capacity
   #desired_capacity     = "${var.asg_desired}"

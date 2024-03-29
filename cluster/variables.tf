@@ -91,6 +91,12 @@ variable "asg_enabled_metrics" {
     */
 }
 
+variable "asg_protect_from_scale_in" {
+  description = "AutoScaling Group protect_from_scale_in"
+  type        = bool
+  default     = false
+}
+
 variable "asg_termination_policies" {
   description = "AutoScaling Group termination_policies"
   type        = list(string)
