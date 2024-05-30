@@ -12,7 +12,12 @@ resource "aws_autoscaling_group" "app" {
   name            = aws_ecs_cluster.main.name
   enabled_metrics = var.asg_enabled_metrics
 
-  launch_configuration  = aws_launch_configuration.app.name
+  # NOTE: launch_configuration is deprecated
+  launch_configuration = var.use_launch_template ? null : aws_launch_configuration.app[0].name
+  launch_template {
+    id = var.use_launch_template ? aws_launch_template.app[0].id : null
+  }
+
   protect_from_scale_in = var.asg_protect_from_scale_in
   termination_policies  = var.asg_termination_policies
 
@@ -41,6 +46,7 @@ resource "aws_autoscaling_group" "app" {
 }
 
 resource "aws_launch_configuration" "app" {
+  count                       = var.use_launch_template ? 0 : 1
   name_prefix                 = "${aws_ecs_cluster.main.name}-"
   security_groups             = var.security_groups
   key_name                    = var.key_name
@@ -71,6 +77,7 @@ resource "aws_launch_configuration" "app" {
 }
 
 resource "aws_launch_template" "app" {
+  count                = var.use_launch_template ? 1 : 0
   name_prefix          = "${aws_ecs_cluster.main.name}-"
   security_group_names = var.security_groups
   key_name             = var.key_name
