@@ -36,7 +36,7 @@ resource "aws_autoscaling_group" "app" {
   lifecycle {
     create_before_destroy = true
     # NOTE: changed automacally by autoscale policy
-    ignore_changes        = [desired_capacity]
+    ignore_changes = [desired_capacity]
   }
 }
 
@@ -67,5 +67,35 @@ resource "aws_launch_configuration" "app" {
 
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+resource "aws_launch_template" "app" {
+  name_prefix          = "${aws_ecs_cluster.main.name}-"
+  security_group_names = var.security_groups
+  key_name             = var.key_name
+  image_id             = var.ami_id
+  instance_type        = var.instance_type
+  ebs_optimized        = var.ebs_optimized
+  user_data            = var.user_data
+
+  block_device_mappings {
+    ebs {
+      volume_type           = "gp3"
+      volume_size           = var.root_volume_size
+      delete_on_termination = true
+    }
+  }
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ecs_instance.name
+  }
+
+  network_interfaces {
+    associate_public_ip_address = var.associate_public_ip_address
+  }
+
+  monitoring {
+    enabled = true
   }
 }

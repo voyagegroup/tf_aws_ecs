@@ -105,7 +105,7 @@ variable "asg_termination_policies" {
 
 variable "asg_extra_tags" {
   description = "AWS EC2 Tag for AutoScaling Group (and attached instances)"
-  type        = list
+  type        = list(any)
   default = [
   ]
   /*
