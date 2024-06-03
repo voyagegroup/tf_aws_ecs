@@ -127,7 +127,7 @@ variable "root_volume_size" {
 variable "use_launch_template" {
   description = "Use launch template instead of launch configuration"
   type        = bool
-  default     = false
+  default     = true
 }
 
 # AutoScaling
