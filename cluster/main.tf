@@ -14,7 +14,8 @@ resource "aws_autoscaling_group" "app" {
 
   launch_configuration = var.use_launch_template ? null : aws_launch_configuration.app.name
   launch_template {
-    id = var.use_launch_template ? aws_launch_template.app.id : null
+    id      = var.use_launch_template ? aws_launch_template.app.id : null
+    version = var.use_launch_template ? aws_launch_template.app.latest_version : null
   }
 
   protect_from_scale_in = var.asg_protect_from_scale_in
