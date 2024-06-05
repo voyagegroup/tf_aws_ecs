@@ -32,6 +32,11 @@ variable "ami_id" {
   type        = string
 }
 
+variable "root_device_name" {
+  description = "using the aws_ami data source root_device_name attribute"
+  type        = string
+}
+
 variable "vpc_zone_identifier" {
   description = "AWS vpc zone identifier(s)"
   type        = list(string)
