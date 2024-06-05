@@ -32,6 +32,12 @@ variable "ami_id" {
   type        = string
 }
 
+variable "root_device_name" {
+  description = "using the aws_ami data source root_device_name attribute"
+  type        = string
+  default     = ""
+}
+
 variable "vpc_zone_identifier" {
   description = "AWS vpc zone identifier(s)"
   type        = list(string)
@@ -105,7 +111,7 @@ variable "asg_termination_policies" {
 
 variable "asg_extra_tags" {
   description = "AWS EC2 Tag for AutoScaling Group (and attached instances)"
-  type        = list
+  type        = list(any)
   default = [
   ]
   /*
@@ -122,6 +128,12 @@ variable "asg_extra_tags" {
 variable "root_volume_size" {
   description = "The size of the root volume in gigabytes"
   default     = 8
+}
+
+variable "use_launch_template" {
+  description = "Use launch template instead of launch configuration"
+  type        = bool
+  default     = true
 }
 
 # AutoScaling

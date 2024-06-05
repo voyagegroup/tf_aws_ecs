@@ -7,23 +7,23 @@
 resource "aws_autoscaling_notification" "ok" {
   count = var.autoscale_notification_ok_topic_arn != "" ? 1 : 0
 
-  group_names   = [aws_autoscaling_group.app.name]
+  group_names = [aws_autoscaling_group.app.name]
   notifications = [
     "autoscaling:EC2_INSTANCE_LAUNCH",
     "autoscaling:EC2_INSTANCE_TERMINATE",
   ]
-  topic_arn     = var.autoscale_notification_ok_topic_arn
+  topic_arn = var.autoscale_notification_ok_topic_arn
 }
 
 resource "aws_autoscaling_notification" "ng" {
   count = var.autoscale_notification_ng_topic_arn != "" ? 1 : 0
 
-  group_names   = [aws_autoscaling_group.app.name]
+  group_names = [aws_autoscaling_group.app.name]
   notifications = [
     "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
     "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
   ]
-  topic_arn     = var.autoscale_notification_ng_topic_arn
+  topic_arn = var.autoscale_notification_ng_topic_arn
 }
 
 // Memory Utilization
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_high" {
   threshold           = var.scale_out_thresholds["memory_util"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_out_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.memory_util_high[0].arn],
       var.scale_out_more_alarm_actions,
@@ -88,7 +88,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_util_low" {
   threshold           = var.scale_in_thresholds["memory_util"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_in_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.memory_util_low[0].arn],
       var.scale_in_more_alarm_actions,
@@ -126,11 +126,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_high" {
   threshold           = var.scale_out_thresholds["cpu_util"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_out_ok_actions)
-  alarm_actions       = compact(
-  concat(
-  [aws_autoscaling_policy.cpu_util_high[0].arn],
-  var.scale_out_more_alarm_actions,
-  ),
+  alarm_actions = compact(
+    concat(
+      [aws_autoscaling_policy.cpu_util_high[0].arn],
+      var.scale_out_more_alarm_actions,
+    ),
   )
 
   dimensions = {
@@ -162,7 +162,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_util_low" {
   threshold           = var.scale_in_thresholds["cpu_util"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_in_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.cpu_util_low[0].arn],
       var.scale_in_more_alarm_actions,
@@ -204,7 +204,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_high" {
     ClusterName = aws_ecs_cluster.main.name
   }
 
-  ok_actions    = compact(var.scale_out_ok_actions)
+  ok_actions = compact(var.scale_out_ok_actions)
   alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.memory_reservation_high[0].arn],
@@ -237,7 +237,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_reservation_low" {
   threshold           = var.scale_in_thresholds["memory_reservation"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_in_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.memory_reservation_low[0].arn],
       var.scale_in_more_alarm_actions,
@@ -275,7 +275,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_high" {
   threshold           = var.scale_out_thresholds["cpu_reservation"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_out_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.cpu_reservation_high[0].arn],
       var.scale_out_more_alarm_actions,
@@ -311,7 +311,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_reservation_low" {
   threshold           = var.scale_in_thresholds["cpu_reservation"]
   treat_missing_data  = "notBreaching"
   ok_actions          = compact(var.scale_in_ok_actions)
-  alarm_actions       = compact(
+  alarm_actions = compact(
     concat(
       [aws_autoscaling_policy.cpu_reservation_low[0].arn],
       var.scale_in_more_alarm_actions,
