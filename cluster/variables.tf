@@ -35,6 +35,7 @@ variable "ami_id" {
 variable "root_device_name" {
   description = "using the aws_ami data source root_device_name attribute"
   type        = string
+  default     = ""
 }
 
 variable "vpc_zone_identifier" {
