@@ -77,13 +77,12 @@ resource "aws_launch_configuration" "app" {
 }
 
 resource "aws_launch_template" "app" {
-  name_prefix          = "${aws_ecs_cluster.main.name}-"
-  security_group_names = var.security_groups
-  key_name             = var.key_name
-  image_id             = var.ami_id
-  instance_type        = var.instance_type
-  ebs_optimized        = var.ebs_optimized
-  user_data            = var.user_data
+  name_prefix   = "${aws_ecs_cluster.main.name}-"
+  key_name      = var.key_name
+  image_id      = var.ami_id
+  instance_type = var.instance_type
+  ebs_optimized = var.ebs_optimized
+  user_data     = var.user_data
 
   block_device_mappings {
     ebs {
@@ -98,6 +97,7 @@ resource "aws_launch_template" "app" {
   }
 
   network_interfaces {
+    security_groups             = var.security_groups
     associate_public_ip_address = var.associate_public_ip_address
   }
 
