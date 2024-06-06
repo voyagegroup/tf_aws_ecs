@@ -2,7 +2,7 @@ OS_TYPE  = $(shell echo $(shell uname) | tr A-Z a-z)
 OS_ARCH := amd64
 
 TERRAFORM         := ./terraform
-TERRAFORM_VERSION := 0.13.5
+TERRAFORM_VERSION := 1.5.7
 TERRAFORM_URL      = https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS_TYPE)_$(OS_ARCH).zip
 
 EXCLUDES_DIRS := _test _example .terraform
@@ -30,11 +30,11 @@ $(TERRAFORM):
 
 $(MODULE_DIRS):
 	/bin/cp -af _test/tf_fixtures/fixture_*.tf $@/
-	$(TERRAFORM) init -input=false -get-plugins=true $@
+	$(TERRAFORM) -chdir=$@ init -input=false
 
 validate: $(TERRAFORM) $(MODULE_DIRS)
 	@echo "[Validate to terraform modules]"
 	@for tf_dir in $(MODULE_DIRS); do \
 	  printf "%-33s ... " "$$tf_dir"; \
-	  $(TERRAFORM) $(@F) $$tf_dir && echo "OK" || IF_ERROR=1; \
+	  $(TERRAFORM) -chdir=$$tf_dir $@ && echo "OK" || IF_ERROR=1; \
 	done; exit $$IF_ERROR
