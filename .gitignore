@@ -1,6 +1,7 @@
 .terraform
 terraform
 terraform.zip
+.terraform.lock.hcl
 
 # For testing
 /**/fixture_*.tf

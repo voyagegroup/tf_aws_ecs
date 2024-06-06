@@ -1,5 +1,8 @@
-provider "aws" {
-  # https://github.com/terraform-providers/terraform-provider-aws/releases
-  version = "~> 3.20"
-  region  = "ap-northeast-1"
+terraform {
+  required_providers {
+    # https://github.com/terraform-providers/terraform-provider-aws/releases
+    aws = {
+      version = "~> 5.0"
+    }
+  }
 }
