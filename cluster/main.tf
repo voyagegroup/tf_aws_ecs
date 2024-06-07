@@ -71,6 +71,15 @@ resource "aws_launch_configuration" "app" {
   # DOCS: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-ami-storage-config.html
   #ebs_block_device  { device_name = "/dev/xvdcz" }
 
+  dynamic "metadata_options" {
+    for_each = length(var.metadata_options) > 0 ? [var.metadata_options] : []
+    content {
+      http_endpoint               = try(metadata_options.value.http_endpoint, null)
+      http_tokens                 = try(metadata_options.value.http_tokens, null)
+      http_put_response_hop_limit = try(metadata_options.value.http_put_response_hop_limit, null)
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
   }
@@ -100,6 +109,17 @@ resource "aws_launch_template" "app" {
   network_interfaces {
     security_groups             = var.security_groups
     associate_public_ip_address = var.associate_public_ip_address
+  }
+
+  dynamic "metadata_options" {
+    for_each = length(var.metadata_options) > 0 ? [var.metadata_options] : []
+    content {
+      http_endpoint               = try(metadata_options.value.http_endpoint, null)
+      http_tokens                 = try(metadata_options.value.http_tokens, null)
+      http_put_response_hop_limit = try(metadata_options.value.http_put_response_hop_limit, null)
+      http_protocol_ipv6          = try(metadata_options.value.http_protocol_ipv6, null)
+      instance_metadata_tags      = try(metadata_options.value.instance_metadata_tags, null)
+    }
   }
 
   monitoring {
