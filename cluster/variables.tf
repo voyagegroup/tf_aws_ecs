@@ -125,6 +125,12 @@ variable "asg_extra_tags" {
   */
 }
 
+variable "metadata_options" {
+  description = "Customize the metadata options for the instance"
+  type        = map(string)
+  default     = {}
+}
+
 variable "root_volume_size" {
   description = "The size of the root volume in gigabytes"
   default     = 8
@@ -199,7 +205,7 @@ variable "scale_in_thresholds" {
   description = "The values against which the specified statistic is compared for scale_in"
   type        = map(string)
   default     = {}
-  # Supporting thresholds as berow
+  # Supporting thresholds as bellow
   #cpu_util           = // e.g.  5
   #cpu_reservation    = // e.g.  5
   #memory_util        = // e.g. 40
